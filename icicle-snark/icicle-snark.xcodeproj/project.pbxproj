@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		3FD9A4632DFF330100297D34 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD9A4622DFF330100297D34 /* Metal.framework */; };
 		3FD9A4652DFF330900297D34 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD9A4642DFF330900297D34 /* Foundation.framework */; };
-		3FD9A4672DFF331000297D34 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD9A4662DFF331000297D34 /* Security.framework */; };
-		3FD9A49A2DFF6A8D00297D34 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD9A4992DFF6A8D00297D34 /* MetalKit.framework */; };
 		3FD9A6DE2E001BE900297D34 /* NSNumber.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A6822E001BE900297D34 /* NSNumber.hpp */; };
 		3FD9A6DF2E001BE900297D34 /* MTLCommandBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A69B2E001BE900297D34 /* MTLCommandBuffer.hpp */; };
 		3FD9A6E02E001BE900297D34 /* CADefines.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A6D32E001BE900297D34 /* CADefines.hpp */; };
@@ -106,9 +104,6 @@
 		3FD9A73A2E001BE900297D34 /* MetalFX.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A6CD2E001BE900297D34 /* MetalFX.hpp */; };
 		3FD9A73B2E001BE900297D34 /* MTLFunctionLog.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A6AC2E001BE900297D34 /* MTLFunctionLog.hpp */; };
 		3FD9A73C2E001BE900297D34 /* MTLResidencySet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3FD9A6C12E001BE900297D34 /* MTLResidencySet.hpp */; };
-		3FD9A73D2E001BE900297D34 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FD9A6DC2E001BE900297D34 /* README.md */; };
-		3FD9A73E2E001BE900297D34 /* MakeSingleHeader.py in Resources */ = {isa = PBXBuildFile; fileRef = 3FD9A6D92E001BE900297D34 /* MakeSingleHeader.py */; };
-		3FD9A73F2E001BE900297D34 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3FD9A6DB2E001BE900297D34 /* LICENSE.txt */; };
 		3FD9A7AF2E00327400297D34 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD9A5672DFF6FD900297D34 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -116,8 +111,6 @@
 		3FD9A44B2DFF261E00297D34 /* icicle_snark.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = icicle_snark.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FD9A4622DFF330100297D34 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		3FD9A4642DFF330900297D34 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		3FD9A4662DFF331000297D34 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		3FD9A4992DFF6A8D00297D34 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3FD9A5672DFF6FD900297D34 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		3FD9A6762E001BE900297D34 /* Foundation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Foundation.hpp; sourceTree = "<group>"; };
 		3FD9A6772E001BE900297D34 /* NSArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NSArray.hpp; sourceTree = "<group>"; };
@@ -214,9 +207,6 @@
 		3FD9A6D52E001BE900297D34 /* CAMetalLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CAMetalLayer.hpp; sourceTree = "<group>"; };
 		3FD9A6D62E001BE900297D34 /* CAPrivate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CAPrivate.hpp; sourceTree = "<group>"; };
 		3FD9A6D72E001BE900297D34 /* QuartzCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = QuartzCore.hpp; sourceTree = "<group>"; };
-		3FD9A6D92E001BE900297D34 /* MakeSingleHeader.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = MakeSingleHeader.py; sourceTree = "<group>"; };
-		3FD9A6DB2E001BE900297D34 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		3FD9A6DC2E001BE900297D34 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -247,9 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FD9A7AF2E00327400297D34 /* QuartzCore.framework in Frameworks */,
-				3FD9A49A2DFF6A8D00297D34 /* MetalKit.framework in Frameworks */,
 				3FD9A4632DFF330100297D34 /* Metal.framework in Frameworks */,
-				3FD9A4672DFF331000297D34 /* Security.framework in Frameworks */,
 				3FD9A4652DFF330900297D34 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,8 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				3FD9A5672DFF6FD900297D34 /* QuartzCore.framework */,
-				3FD9A4992DFF6A8D00297D34 /* MetalKit.framework */,
-				3FD9A4662DFF331000297D34 /* Security.framework */,
 				3FD9A4642DFF330900297D34 /* Foundation.framework */,
 				3FD9A4622DFF330100297D34 /* Metal.framework */,
 			);
@@ -410,14 +396,6 @@
 			path = QuartzCore;
 			sourceTree = "<group>";
 		};
-		3FD9A6DA2E001BE900297D34 /* SingleHeader */ = {
-			isa = PBXGroup;
-			children = (
-				3FD9A6D92E001BE900297D34 /* MakeSingleHeader.py */,
-			);
-			path = SingleHeader;
-			sourceTree = "<group>";
-		};
 		3FD9A6DD2E001BE900297D34 /* metal-cpp */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,9 +403,6 @@
 				3FD9A6CC2E001BE900297D34 /* Metal */,
 				3FD9A6D22E001BE900297D34 /* MetalFX */,
 				3FD9A6D82E001BE900297D34 /* QuartzCore */,
-				3FD9A6DA2E001BE900297D34 /* SingleHeader */,
-				3FD9A6DB2E001BE900297D34 /* LICENSE.txt */,
-				3FD9A6DC2E001BE900297D34 /* README.md */,
 			);
 			path = "metal-cpp";
 			sourceTree = "<group>";
@@ -601,9 +576,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FD9A73D2E001BE900297D34 /* README.md in Resources */,
-				3FD9A73E2E001BE900297D34 /* MakeSingleHeader.py in Resources */,
-				3FD9A73F2E001BE900297D34 /* LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,7 +610,7 @@
 					"$(PROJECT_DIR)",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/metal-cpp/**";
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/metal-cpp/";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -685,7 +657,7 @@
 					"$(PROJECT_DIR)",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/metal-cpp/**";
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/metal-cpp/";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (

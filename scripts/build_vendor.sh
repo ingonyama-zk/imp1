@@ -60,10 +60,10 @@ build_target() {
         cp "$icicle_dir/libicicle_hash.a" "$OUTPUT_DIR/libicicle_hash${arch_suffix}.a"
         
         # Copy icicle metal backends as well
-        # cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_curve_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_curve_bn254${arch_suffix}.a"
-        # cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_field_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_field_bn254${arch_suffix}.a"
-        # cp "$icicle_dir/backend/metal/libicicle_backend_metal_device.a" "$OUTPUT_DIR/libicicle_metal_backend_device${arch_suffix}.a"
-        # cp "$icicle_dir/backend/metal/libicicle_backend_metal_hash.a" "$OUTPUT_DIR/libicicle_metal_backend_hash${arch_suffix}.a"
+        cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_curve_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_curve_bn254${arch_suffix}.a"
+        cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_field_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_field_bn254${arch_suffix}.a"
+        cp "$icicle_dir/backend/metal/libicicle_backend_metal_device.a" "$OUTPUT_DIR/libicicle_metal_backend_device${arch_suffix}.a"
+        cp "$icicle_dir/backend/metal/libicicle_backend_metal_hash.a" "$OUTPUT_DIR/libicicle_metal_backend_hash${arch_suffix}.a"
 
         echo -e "${GREEN}✓ Copied icicle libraries for $target${NC}"
     else

@@ -2,7 +2,6 @@
 #define PublicApi_h
 
 #include <Foundation/Foundation.h>
-#include <Metal/Metal.h>
 
 /**
  * @enum DeviceType
@@ -13,8 +12,8 @@
  */
 typedef NS_ENUM(NSInteger, DeviceType) {
     Cpu,
-    // Metal,
-    // CpuMetal
+    Metal,
+    CpuMetal
 };
 
 /**

@@ -2,8 +2,6 @@
 //  icicle_snark.h
 //  icicle-snark
 //
-//  Created by Jeremy Felder on 15/06/2025.
-//
 
 #import <Foundation/Foundation.h>
 

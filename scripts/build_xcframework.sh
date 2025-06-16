@@ -37,11 +37,6 @@ if [ ! -d "$PROJECT_PATH" ]; then
     exit 1
 fi
 
-#     -force_load $BUILD_DIR/libicicle_metal_backend_curve_bn254_ios_arm64.a \
-    # -force_load $BUILD_DIR/libicicle_metal_backend_field_bn254_ios_arm64.a \
-    # -force_load $BUILD_DIR/libicicle_metal_backend_device_ios_arm64.a \
-    # -force_load $BUILD_DIR/libicicle_metal_backend_hash_ios_arm64.a \
-    # HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
 # Step 2: Build iOS Device Framework
 echo -e "${BLUE}📱 Step 2: Building iOS Device Framework...${NC}"
 xcodebuild -project "$PROJECT_PATH" \
@@ -52,6 +47,7 @@ xcodebuild -project "$PROJECT_PATH" \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     LIBRARY_SEARCH_PATHS="$BUILD_DIR" \
+    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
     MODULEMAP_FILE="$FRAMEWORK_ROOT/icicle-snark/icicle-snark/module.modulemap" \
     OTHER_LDFLAGS="\
     -force_load $BUILD_DIR/libicicle_snark_ios_arm64.a \
@@ -59,6 +55,10 @@ xcodebuild -project "$PROJECT_PATH" \
     -force_load $BUILD_DIR/libicicle_curve_bn254_ios_arm64.a \
     -force_load $BUILD_DIR/libicicle_field_bn254_ios_arm64.a \
     -force_load $BUILD_DIR/libicicle_hash_ios_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_curve_bn254_ios_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_field_bn254_ios_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_device_ios_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_hash_ios_arm64.a \
     -lc++ \
     -framework Foundation \
     -framework Security \
@@ -68,11 +68,6 @@ xcodebuild -project "$PROJECT_PATH" \
     VALID_ARCHS="arm64" \
     ARCHS="arm64"
 
-# -force_load $BUILD_DIR/libicicle_metal_backend_curve_bn254_sim_arm64.a \
-#     -force_load $BUILD_DIR/libicicle_metal_backend_field_bn254_sim_arm64.a \
-#     -force_load $BUILD_DIR/libicicle_metal_backend_device_sim_arm64.a \
-#     -force_load $BUILD_DIR/libicicle_metal_backend_hash_sim_arm64.a \
-    # HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
 # Step 3: Build iOS Simulator Framework
 echo -e "${BLUE}📱 Step 3: Building iOS Simulator Framework...${NC}"
 xcodebuild -project "$PROJECT_PATH" \
@@ -82,6 +77,7 @@ xcodebuild -project "$PROJECT_PATH" \
     archive \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
     LIBRARY_SEARCH_PATHS="$BUILD_DIR" \
     MODULEMAP_FILE="$FRAMEWORK_ROOT/icicle-snark/icicle-snark/module.modulemap" \
     OTHER_LDFLAGS="\
@@ -90,6 +86,10 @@ xcodebuild -project "$PROJECT_PATH" \
     -force_load $BUILD_DIR/libicicle_curve_bn254_sim_arm64.a \
     -force_load $BUILD_DIR/libicicle_field_bn254_sim_arm64.a \
     -force_load $BUILD_DIR/libicicle_hash_sim_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_curve_bn254_sim_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_field_bn254_sim_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_device_sim_arm64.a \
+    -force_load $BUILD_DIR/libicicle_metal_backend_hash_sim_arm64.a \
     -lc++ \
     -framework Foundation \
     -framework Security \
