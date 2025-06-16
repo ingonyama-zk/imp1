@@ -6,8 +6,8 @@
 
 typedef NS_ENUM(NSInteger, DeviceType) {
     Cpu,
-    Metal,
-    CpuMetal
+    // Metal,
+    // CpuMetal
 };
 
 typedef NS_ENUM(NSInteger, ProofResult) {
