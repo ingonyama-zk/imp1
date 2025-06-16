@@ -1,0 +1,4 @@
+framework module icicle_snark {
+    umbrella header "icicle_snark.h"
+    export *
+} 
