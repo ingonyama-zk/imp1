@@ -36,7 +36,7 @@ An efficient implementation of Groth16, built for mobile devices.
 ## 🚀 Quickstart
 
 ### Step 1: Download  
-[Download the package](https://github.com/ingonyama-zk/imp1/releases/download/v0.1.0/icicle-snark.xcframework.zip) 
+[Download the package](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1.xcframework.zip) 
 
 ### Step 2: Install  
 Unzip & Drag **IMP1.xcframework** into your iOS or Android app.
