@@ -1,7 +1,7 @@
 # IMP1
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b35ea65f-65b8-4338-ae8c-84ce8602c93e" alt="Ice Imp" width="300"/>
+  <img src="https://github.com/user-attachments/assets/67d85e08-5739-40a4-84a1-f631d3280eaf" alt="Ice Imp" width="300"/>
 </div>
 
 **Drop-in framework for mobile ZK proofs. iOS-ready, Android coming soon.**
