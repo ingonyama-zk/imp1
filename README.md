@@ -41,8 +41,9 @@ An efficient implementation of Groth16, built for mobile devices.
 ### Step 2: Install  
 Unzip & Drag **IMP1.xcframework** into your iOS or Android app.
 
-### Step 3: Prove  
-Call `prove()` or `verify()` from your client.
+### Step 3: Prove
+Use the `prove()` and `verify()` functions from the framework’s public interface.
+See `PublicApi.h` for function definitions, usage comments, and required types.
 
 ---
 
