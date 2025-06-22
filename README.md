@@ -43,7 +43,7 @@ Unzip & Drag **IMP1.xcframework** into your iOS or Android app.
 
 ### Step 3: Prove
 Use the `prove()` and `verify()` functions from the framework’s public interface.
-See `PublicApi.h` for function definitions, usage comments, and required types.
+See [`PublicApi.h`](https://github.com/ingonyama-zk/imp1/blob/main/icicle-snark/icicle-snark/PublicApi.h) for function definitions, usage comments, and required types.
 
 ---
 
