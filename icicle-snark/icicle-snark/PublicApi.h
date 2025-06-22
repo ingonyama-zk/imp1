@@ -6,13 +6,13 @@
 /**
  * @enum DeviceType
  * @brief Specifies the type of device to use for computation
- * @constant Cpu CPU-based computation
+ * @constant Cpu CPU-based computation (currently disabled)
  * @constant Metal Metal-based computation (currently disabled)
- * @constant CpuMetal Hybrid CPU and Metal computation (currently disabled)
+ * @constant CpuMetal Hybrid CPU and Metal computation
  */
 typedef NS_ENUM(NSInteger, DeviceType) {
-    Cpu,
-    Metal,
+    // Cpu,
+    // Metal,
     CpuMetal
 };
 
