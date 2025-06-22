@@ -1,29 +1,30 @@
 # IMP1
 
-**Drop-in framework for mobile ZK proofs. iOS & Android ready.**
+**Drop-in framework for mobile ZK proofs. iOS-ready, Android coming soon.**
 
-Built with **ICICLE**, this mobile-first proving framework brings **privacy-preserving zero-knowledge proofs** directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required. Try it.
+Built with **ICICLE**, this mobile-first proving framework brings **privacy-preserving zero-knowledge proofs** directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required.
 
----
+> **_NOTE:_** Android support is coming soon!
 
 ## ✨ Features
 
-- 🔧 **ICICLE Engine Inside**  
+🔧 **ICICLE Engine Inside**  
   Accelerated proving, powered by ICICLE.
 
-- ⚡ **Fastest mobile proving experience**  
+⚡ **Fastest mobile proving experience**  
   Unmatched speed for client-side ZK proofs.
 
-- 🔓 **Open-source (MIT license)**  
+🔓 **Open-source (MIT license)**  
   Free to use, fork, and build upon.
 
-- 📦 **Minimal dependencies**  
+📦 **Minimal dependencies**  
   Lightweight and easy to plug in.
 
-- 📱 **Built for iOS and Android**  
-  Seamless integration across both major platforms.
+📱 **Built for iOS and Android**  
+  Seamless integration across both major platforms.  
+  _⚠ Android support coming soon_
 
-- ✅ **Built-in Groth16 support**  
+✅ **Built-in Groth16 support**  
   Ready-to-go proving system included.
 
 ---
