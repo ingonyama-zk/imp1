@@ -47,6 +47,12 @@ See [`PublicApi.h`](https://github.com/ingonyama-zk/imp1/blob/main/icicle-snark/
 
 ---
 
+## 🧪 Examples
+To get started quickly, check out the [IMP1 Example App](https://github.com/ingonyama-zk/example-imp1-app) — a minimal iOS project showing how to integrate and use the framework in a real mobile environment.
+
+📱 Android support is coming soon. An Android example will be available once the Android version of the framework is released.
+
+
 ## 🛠 License
 
 [MIT License](./LICENSE)
