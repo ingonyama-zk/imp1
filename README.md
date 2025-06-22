@@ -1,5 +1,9 @@
 # IMP1
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b35ea65f-65b8-4338-ae8c-84ce8602c93e" alt="Ice Imp" width="300"/>
+</div>
+
 **Drop-in framework for mobile ZK proofs. iOS-ready, Android coming soon.**
 
 Built with **ICICLE**, this mobile-first proving framework brings **privacy-preserving zero-knowledge proofs** directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required.
