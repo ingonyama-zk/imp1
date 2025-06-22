@@ -31,7 +31,7 @@ Built with **ICICLE**, this mobile-first proving framework brings **privacy-pres
 ## 🚀 Quickstart
 
 ### Step 1: Download  
-Download the package from [GitHub](#).
+Download the package 
 
 ### Step 2: Install  
 Drag **IMP1** into your iOS or Android app.
