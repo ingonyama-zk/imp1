@@ -12,7 +12,7 @@ Built with **ICICLE**, this mobile-first proving framework brings **privacy-pres
   Accelerated proving, powered by ICICLE.
 
 ⚡ **Fastest mobile proving experience**  
-  Unmatched speed for client-side ZK proofs.
+Up to 3x faster than Rapidsnark
 
 🔓 **Open-source (MIT license)**  
   Free to use, fork, and build upon.
