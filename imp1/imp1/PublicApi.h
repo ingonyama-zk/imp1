@@ -6,13 +6,9 @@
 /**
  * @enum DeviceType
  * @brief Specifies the type of device to use for computation
- * @constant Cpu CPU-based computation (currently disabled)
- * @constant Metal Metal-based computation (currently disabled)
  * @constant CpuMetal Hybrid CPU and Metal computation
  */
 typedef NS_ENUM(NSInteger, DeviceType) {
-    // Cpu,
-    // Metal,
     CpuMetal
 };
 
@@ -39,7 +35,7 @@ typedef NS_ENUM(NSInteger, VerifierResult) {
 };
 
 /**
- * @brief Generates a zero-knowledge proof
+ * @brief Generates a proof
  * @param witness_path Path to the witness file containing private inputs
  * @param zkey_path Path to the zkey file containing the proving key
  * @param proof_path Path where the generated proof will be saved
@@ -60,7 +56,7 @@ ProofResult prove(
 );
 
 /**
- * @brief Verifies a zero-knowledge proof
+ * @brief Verifies a proof
  * @param proof_path Path to the proof file to verify
  * @param public_path Path to the public inputs file
  * @param vk_path Path to the verification key file

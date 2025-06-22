@@ -108,7 +108,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3FD9A44B2DFF261E00297D34 /* icicle_snark.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = icicle_snark.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FD9A44B2DFF261E00297D34 /* imp1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = imp1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FD9A4622DFF330100297D34 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		3FD9A4642DFF330900297D34 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3FD9A5672DFF6FD900297D34 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -210,23 +210,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3FD9A4502DFF261E00297D34 /* Exceptions for "icicle-snark" folder in "icicle-snark" target */ = {
+		3FD9A4502DFF261E00297D34 /* Exceptions for "imp1" folder in "imp1" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
-				icicle_snark.h,
+				imp1.h,
 				PublicApi.h,
 			);
-			target = 3FD9A44A2DFF261E00297D34 /* icicle-snark */;
+			target = 3FD9A44A2DFF261E00297D34 /* imp1 */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		3FD9A44D2DFF261E00297D34 /* icicle-snark */ = {
+		3FD9A44D2DFF261E00297D34 /* imp1 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				3FD9A4502DFF261E00297D34 /* Exceptions for "icicle-snark" folder in "icicle-snark" target */,
+				3FD9A4502DFF261E00297D34 /* Exceptions for "imp1" folder in "imp1" target */,
 			);
-			path = "icicle-snark";
+			path = imp1;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -249,7 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				3FD9A6DD2E001BE900297D34 /* metal-cpp */,
-				3FD9A44D2DFF261E00297D34 /* icicle-snark */,
+				3FD9A44D2DFF261E00297D34 /* imp1 */,
 				3FD9A4612DFF330000297D34 /* Frameworks */,
 				3FD9A44C2DFF261E00297D34 /* Products */,
 			);
@@ -258,7 +258,7 @@
 		3FD9A44C2DFF261E00297D34 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3FD9A44B2DFF261E00297D34 /* icicle_snark.framework */,
+				3FD9A44B2DFF261E00297D34 /* imp1.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -515,9 +515,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3FD9A44A2DFF261E00297D34 /* icicle-snark */ = {
+		3FD9A44A2DFF261E00297D34 /* imp1 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3FD9A4512DFF261E00297D34 /* Build configuration list for PBXNativeTarget "icicle-snark" */;
+			buildConfigurationList = 3FD9A4512DFF261E00297D34 /* Build configuration list for PBXNativeTarget "imp1" */;
 			buildPhases = (
 				3FD9A4462DFF261E00297D34 /* Headers */,
 				3FD9A4472DFF261E00297D34 /* Sources */,
@@ -529,13 +529,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				3FD9A44D2DFF261E00297D34 /* icicle-snark */,
+				3FD9A44D2DFF261E00297D34 /* imp1 */,
 			);
-			name = "icicle-snark";
+			name = imp1;
 			packageProductDependencies = (
 			);
-			productName = "icicle-snark";
-			productReference = 3FD9A44B2DFF261E00297D34 /* icicle_snark.framework */;
+			productName = imp1;
+			productReference = 3FD9A44B2DFF261E00297D34 /* imp1.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -552,7 +552,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3FD9A4452DFF261E00297D34 /* Build configuration list for PBXProject "icicle-snark" */;
+			buildConfigurationList = 3FD9A4452DFF261E00297D34 /* Build configuration list for PBXProject "imp1" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -566,7 +566,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3FD9A44A2DFF261E00297D34 /* icicle-snark */,
+				3FD9A44A2DFF261E00297D34 /* imp1 */,
 			);
 		};
 /* End PBXProject section */
@@ -621,11 +621,11 @@
 				LIBRARY_SEARCH_PATHS = ../Build;
 				MACH_O_TYPE = mh_dylib;
 				MARKETING_VERSION = 0.2.0;
-				MODULEMAP_FILE = "${PROJECT_DIR}/icicle-snark/module.modulemap";
+				MODULEMAP_FILE = "${PROJECT_DIR}/imp1/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				OTHER_LDFLAGS = "-lc++";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ingonyama.icicle-snark";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ingonyama.imp1;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -668,11 +668,11 @@
 				LIBRARY_SEARCH_PATHS = ../Build;
 				MACH_O_TYPE = mh_dylib;
 				MARKETING_VERSION = 0.2.0;
-				MODULEMAP_FILE = "${PROJECT_DIR}/icicle-snark/module.modulemap";
+				MODULEMAP_FILE = "${PROJECT_DIR}/imp1/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				OTHER_LDFLAGS = "-lc++";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ingonyama.icicle-snark";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ingonyama.imp1;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -815,7 +815,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3FD9A4452DFF261E00297D34 /* Build configuration list for PBXProject "icicle-snark" */ = {
+		3FD9A4452DFF261E00297D34 /* Build configuration list for PBXProject "imp1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3FD9A4542DFF261E00297D34 /* Debug */,
@@ -824,7 +824,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3FD9A4512DFF261E00297D34 /* Build configuration list for PBXNativeTarget "icicle-snark" */ = {
+		3FD9A4512DFF261E00297D34 /* Build configuration list for PBXNativeTarget "imp1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3FD9A4522DFF261E00297D34 /* Debug */,

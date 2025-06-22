@@ -1,6 +1,6 @@
 //
 //  include_metal.cpp
-//  icicle-snark
+//  imp1
 //
 
 #define NS_PRIVATE_IMPLEMENTATION

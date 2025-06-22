@@ -11,12 +11,12 @@ NC='\033[0m' # No Color
 
 # Configuration
 FRAMEWORK_ROOT="$(pwd)"
-PROJECT_NAME="icicle-snark"
-FRAMEWORK_NAME="icicle-snark"
+PROJECT_NAME="imp1"
+FRAMEWORK_NAME="imp1"
 BUILD_DIR="$FRAMEWORK_ROOT/Build"
 ARCHIVES_DIR="$BUILD_DIR/Archives"
 XCFRAMEWORK_OUTPUT="$BUILD_DIR/$FRAMEWORK_NAME.xcframework"
-PROJECT_PATH="$FRAMEWORK_ROOT/icicle-snark/icicle-snark.xcodeproj"
+PROJECT_PATH="$FRAMEWORK_ROOT/imp1/imp1.xcodeproj"
 
 echo -e "${BLUE}🚀 Building $FRAMEWORK_NAME XCFramework...${NC}"
 echo -e "${YELLOW}Framework root: $FRAMEWORK_ROOT${NC}"
@@ -47,8 +47,8 @@ xcodebuild -project "$PROJECT_PATH" \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     LIBRARY_SEARCH_PATHS="$BUILD_DIR" \
-    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
-    MODULEMAP_FILE="$FRAMEWORK_ROOT/icicle-snark/icicle-snark/module.modulemap" \
+    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/imp1/metal-cpp/**" \
+    MODULEMAP_FILE="$FRAMEWORK_ROOT/imp1/imp1/module.modulemap" \
     OTHER_LDFLAGS="\
     -force_load $BUILD_DIR/libicicle_snark_ios_arm64.a \
     -force_load $BUILD_DIR/libicicle_device_ios_arm64.a \
@@ -77,9 +77,9 @@ xcodebuild -project "$PROJECT_PATH" \
     archive \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/icicle-snark/metal-cpp/**" \
+    HEADER_SEARCH_PATHS="$FRAMEWORK_ROOT/imp1/metal-cpp/**" \
     LIBRARY_SEARCH_PATHS="$BUILD_DIR" \
-    MODULEMAP_FILE="$FRAMEWORK_ROOT/icicle-snark/icicle-snark/module.modulemap" \
+    MODULEMAP_FILE="$FRAMEWORK_ROOT/imp1/imp1/module.modulemap" \
     OTHER_LDFLAGS="\
     -force_load $BUILD_DIR/libicicle_snark_sim_arm64.a \
     -force_load $BUILD_DIR/libicicle_device_sim_arm64.a \
@@ -102,8 +102,8 @@ xcodebuild -project "$PROJECT_PATH" \
 # Step 4: Create XCFramework
 echo -e "${BLUE}🏗️  Step 4: Creating XCFramework...${NC}"
 xcodebuild -create-xcframework \
-    -framework "$ARCHIVES_DIR/ios.xcarchive/Products/Library/Frameworks/icicle_snark.framework" \
-    -framework "$ARCHIVES_DIR/ios-simulator.xcarchive/Products/Library/Frameworks/icicle_snark.framework" \
+    -framework "$ARCHIVES_DIR/ios.xcarchive/Products/Library/Frameworks/imp1.framework" \
+    -framework "$ARCHIVES_DIR/ios-simulator.xcarchive/Products/Library/Frameworks/imp1.framework" \
     -output "$XCFRAMEWORK_OUTPUT"
 
 # Step 5: Verify XCFramework
