@@ -28,8 +28,8 @@ Up to 3x faster than Rapidsnark
   Seamless integration across both major platforms.  
   _⚠ Android support coming soon_
 
-✅ **Built-in Groth16 support**  
-  Ready-to-go proving system included.
+✅ **Mobile-optimized Groth16 prover**
+An efficient implementation of Groth16, built for mobile devices.
 
 ---
 
@@ -39,7 +39,7 @@ Up to 3x faster than Rapidsnark
 [Download the package](https://github.com/ingonyama-zk/imp1/releases/download/v0.1.0/icicle-snark.xcframework.zip) 
 
 ### Step 2: Install  
-Drag **IMP1** into your iOS or Android app.
+Unzip & Drag **IMP1.xcframework** into your iOS or Android app.
 
 ### Step 3: Prove  
 Call `prove()` or `verify()` from your client.
