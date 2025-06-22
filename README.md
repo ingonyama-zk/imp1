@@ -6,7 +6,7 @@
 
 **Drop-in framework for mobile ZK proofs. iOS-ready, Android coming soon.**
 
-Built with **ICICLE**, this mobile-first proving framework brings **privacy-preserving zero-knowledge proofs** directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required.
+Built with ICICLE, this mobile-first proving framework brings privacy-preserving zero-knowledge proofs directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required. IMP1 is built on ICICLE-SNARK, an end-to-end prover powered by ICICLE.
 
 > **_NOTE:_** Android support is coming soon!
 
