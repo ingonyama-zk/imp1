@@ -36,7 +36,7 @@ Up to 3x faster than Rapidsnark
 ## 🚀 Quickstart
 
 ### Step 1: Download  
-Download the [package](https://github.com/ingonyama-zk/imp1/releases/download/v0.1.0/icicle-snark.xcframework.zip) 
+[Download the package](https://github.com/ingonyama-zk/imp1/releases/download/v0.1.0/icicle-snark.xcframework.zip) 
 
 ### Step 2: Install  
 Drag **IMP1** into your iOS or Android app.
