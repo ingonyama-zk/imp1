@@ -46,41 +46,6 @@ Call `prove()` or `verify()` from your client.
 
 ---
 
-## 🔧 Building the iOS XCFramework
-
-> **Note**: Requires `xcodebuild` version **16.2+** and all prerequisites for building ICICLE.
-
-### Steps:
-
-1. Run:
-   ```bash
-   git submodule update --remote --init --recursive
-   ```
-
-2. Clone or link `icicle-metal-backend` into:
-   ```
-   ./vendor/icicle-snark/vendor/icicle/icicle/backend/metal
-   ```
-   > Make sure it’s on branch `stas/ios/port1`.
-
-3. Build the xcframework:
-   ```bash
-   ./scripts/build_xcframework.sh
-   ```
-
-4. Distribute the output `.zip` file.
-
----
-
-## 📁 Project Layout
-
-- `icicle-snark/` – iOS xcframework project: build settings, public headers (`PublicAPI.h`), and Metal bindings (`include_metal.cpp`)
-- `metal-cpp/` – Metal C++ headers
-- `scripts/` – Build scripts for ICICLE-snark and xcframework
-- `vendor/` – Git submodules for ICICLE-snark and ICICLE
-
----
-
 ## 🛠 License
 
 [MIT License](./LICENSE)
