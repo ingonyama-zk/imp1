@@ -1,4 +1,0 @@
-framework module imp1 {
-    umbrella header "imp1.h"
-    export *
-} 
