@@ -35,11 +35,22 @@ An efficient implementation of Groth16, built for mobile devices.
 ## 📊 Performance
 
 <div align="center">
-  <img src="IMP iphone.png" alt="IMP1 performance by circuit size" width="400"/>
-</div>
 
-<div align="center">
-  <img src="IMP rarimo.png" alt="IMP1 performance across devices" width="400"/>
+<table>
+  <tr>
+    <td align="center" style="padding-right: 20px;">
+      <img src="./IMP iphone.png" alt="IMP1 performance by circuit size" width="400"/>
+      <br/>
+      <em>Proof time by circuit size (iPhone 16 Pro)</em>
+    </td>
+    <td align="center" style="padding-left: 20px;">
+      <img src="./IMP rarimo.png" alt="IMP1 performance across devices" width="400"/>
+      <br/>
+      <em>Device comparison on Rarimo–Bionetta circuit</em>
+    </td>
+  </tr>
+</table>
+
 </div>
 
 ---
