@@ -32,6 +32,17 @@ Up to 3x faster than Rapidsnark
 An efficient implementation of Groth16, built for mobile devices.
 
 ---
+## 📊 Performance
+
+<div align="center">
+  <img src="IMP iphone.png" alt="IMP1 performance by circuit size" width="400"/>
+</div>
+
+<div align="center">
+  <img src="IMP rarimo.png" alt="IMP1 performance across devices" width="400"/>
+</div>
+
+---
 
 ## 🚀 Quickstart
 
