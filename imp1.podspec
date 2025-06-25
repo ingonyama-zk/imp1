@@ -8,11 +8,11 @@ IMP1 is a lightweight, privacy-preserving zero-knowledge proving framework for i
 
   s.homepage         = 'https://github.com/ingonyama-zk/imp1'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Ingonyama' => 'hi@ingonyama.com' }
+  s.author           = { 'Ingonyama' => 'zk@ingonyama.com' }
   s.source           = {
     :http => 'https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1.xcframework.zip'
   }
 
   s.vendored_frameworks = 'imp1.xcframework'
-  s.platform     = :ios, '13.0'
+  s.platform     = :ios
 end
