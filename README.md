@@ -4,11 +4,12 @@
   <img src="https://github.com/user-attachments/assets/67d85e08-5739-40a4-84a1-f631d3280eaf" alt="Ice Imp" width="300"/>
 </div>
 
-**Drop-in framework for mobile ZK proofs. iOS-ready, Android coming soon.**
+**Drop-in framework for mobile ZK proofs.**
 
 Built with ICICLE, this mobile-first proving framework brings privacy-preserving zero-knowledge proofs directly to iOS and Android. It’s lightweight, open-source, and optimized for fast, client-side performance with minimal setup required. IMP1 is built on ICICLE-SNARK, an end-to-end prover powered by ICICLE.
 
-> **_NOTE:_** Android support is coming soon!
+> [!NOTE]
+> Android support for arm64-v8a architecture only.
 
 ## ✨ Features
 
@@ -26,12 +27,13 @@ Up to 3x faster than Rapidsnark
 
 📱 **Built for iOS and Android**  
   Seamless integration across both major platforms.  
-  _⚠ Android support coming soon_
+  _⚠ Android support for arm64-v8a architecture only._
 
 ✅ **Mobile-optimized Groth16 prover**
 An efficient implementation of Groth16, built for mobile devices.
 
 ---
+
 ## 📊 Performance
 
 <div align="center">
@@ -57,23 +59,23 @@ An efficient implementation of Groth16, built for mobile devices.
 
 ## 🚀 Quickstart
 
-### Step 1: Download  
-[Download the package](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1.xcframework.zip) 
+### iOS
 
-### Step 2: Install  
-Unzip & Drag **IMP1.xcframework** into your iOS or Android app.
+1. [Download the xcframework](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1.xcframework.zip)
+2. Unzip & Drag **imp1.xcframework** into your iOS app.
+3. Use the `prove()` and `verify()` functions from the framework’s public interface. See [`PublicApi.h`](./ios/imp1/imp1/PublicApi.h) for function definitions, usage comments, and required types.
 
-### Step 3: Prove
-Use the `prove()` and `verify()` functions from the framework’s public interface.
-See [`PublicApi.h`](https://github.com/ingonyama-zk/imp1/blob/main/icicle-snark/icicle-snark/PublicApi.h) for function definitions, usage comments, and required types.
+### Android
+
+1. [Download the aar](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1-0.2.0.aar)
+2. Drag **imp1-0.2.0.aar** into your Android app.
+3. Use the `prove()` and `verify()` functions from the library’s native bridge. See [`NativeBridge.kt`](./android/imp1/app/src/main/java/com/ingonyama/imp1/NativeBridge.kt) for function definitions, usage comments, and required types.
 
 ---
 
 ## 🧪 Examples
-To get started quickly, check out the [IMP1 Example App](https://github.com/ingonyama-zk/imp1/tree/main/ios/ExampleApp) inside — a minimal iOS project showing how to integrate and use the framework in a real mobile environment.
 
-📱 Android support is coming soon. An Android example will be available once the Android version of the framework is released.
-
+To get started quickly, check out the example [iOS](./ios/ExampleApp) or [Android](./android/ExampleApp/) App inside — a minimal project showing how to integrate and use imp1 in a real mobile environment.
 
 ## 🛠 License
 
