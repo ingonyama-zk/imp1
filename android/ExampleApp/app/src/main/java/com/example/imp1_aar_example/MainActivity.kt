@@ -106,9 +106,8 @@ class MainActivity : AppCompatActivity() {
 
                 // Step 2: Run the prover
                 log("\nRunning Prover...")
-                var proveTime = -1L
                 try {
-                    proveTime = measureTimeMillis {
+                    val proveTime = measureTimeMillis {
                         NativeBridge.prove(
                             witnessPath = witnessFile.absolutePath,
                             zkeyPath = zkeyFile.absolutePath,
