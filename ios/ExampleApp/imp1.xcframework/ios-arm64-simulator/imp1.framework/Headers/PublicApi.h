@@ -68,4 +68,36 @@ VerifierResult verify(
     const char* vk_path
 );
 
+/**
+ * @brief Generates multiple proofs in parallel using the same circuit
+ * @param witness_paths Array of paths to witness files containing private inputs
+ * @param zkey_path Path to the zkey file containing the proving key (shared for all proofs)
+ * @param proof_paths Array of paths where the generated proofs will be saved
+ * @param public_paths Array of paths where the public inputs will be saved
+ * @param num_proofs Number of proofs to generate in parallel
+ * @param error_msg Buffer to store error messages if parallel proof generation fails
+ * @param error_msg_maxsize Maximum size of the error message buffer
+ * @param device Type of device to use for computation
+ * @param max_batch_size Maximum number of proofs to process in a single batch (0 for default of 10)
+ * @return Pointer to array of long long integers indicating success (0) or failure (1) of each proof generation
+ */
+long long* parallel_prove(
+    const char** witness_paths,
+    const char* zkey_path,
+    const char** proof_paths,
+    const char** public_paths,
+    unsigned long long num_proofs,
+    char* error_msg,
+    unsigned long long error_msg_maxsize,
+    DeviceType device,
+    unsigned long long max_batch_size
+);
+
+/**
+ * @brief Frees the memory allocated for parallel proof results
+ * @param results Pointer to the results array returned by parallel_prove
+ * @param count Number of results in the array
+ */
+void free_parallel_results(long long* results, unsigned long long count);
+
 #endif 

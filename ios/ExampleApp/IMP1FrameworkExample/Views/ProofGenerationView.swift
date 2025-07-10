@@ -5,6 +5,7 @@ struct ProofGenerationView: View {
     let ERROR_SIZE = UInt(256)
     let example: Example
     @State private var proofResult: String = "No proof generated yet"
+    @State private var proofRuntime: String = ""
     @Environment(\.dismiss) private var dismiss
     
     init(example: Example) {
@@ -19,10 +20,19 @@ struct ProofGenerationView: View {
                 .padding()
             
             ScrollView {
-                Text(proofResult)
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .textSelection(.enabled)  // Allow text selection
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(proofResult)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .textSelection(.enabled)  // Allow text selection
+                    
+                    if !proofRuntime.isEmpty {
+                        Text("Runtime: \(proofRuntime)")
+                            .font(.headline)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal)
+                    }
+                }
             }
             .frame(height: 300)  // Fixed height to show about 10 lines
             .background(Color(.systemBackground))
@@ -94,8 +104,23 @@ struct ProofGenerationView: View {
         return result
     }
     
+    private func formatTimeInterval(_ timeInterval: TimeInterval) -> String {
+        if timeInterval < 1.0 {
+            return String(format: "%.3f seconds", timeInterval)
+        } else if timeInterval < 60.0 {
+            return String(format: "%.2f seconds", timeInterval)
+        } else {
+            let minutes = Int(timeInterval / 60)
+            let seconds = timeInterval.truncatingRemainder(dividingBy: 60)
+            return String(format: "%d minutes %.2f seconds", minutes, seconds)
+        }
+    }
+    
     private func generateProof() {
         print("Starting proof generation for \(example.name)")
+        
+        // Reset runtime display
+        proofRuntime = ""
         
         // Get paths for input files from bundle
         guard let bundleZkeyPath = Bundle.main.path(forResource: example.bundleZkeyPath, ofType: nil) else {
@@ -145,6 +170,9 @@ struct ProofGenerationView: View {
             let errorBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: Int(ERROR_SIZE))
             let errorBufferSize = UInt64(ERROR_SIZE)
 
+            // Start timing the prove() function
+            let startTime = CFAbsoluteTimeGetCurrent()
+            
             let proof_result = withCStrings([documentsWitnessPath, documentsZkeyPath, proofPath, publicPath]) { ptrs in
                 let witnessPathPtr = ptrs[0]
                 let zkeyPathPtr = ptrs[1]
@@ -153,6 +181,12 @@ struct ProofGenerationView: View {
                 return prove(witnessPathPtr, zkeyPathPtr, proofPathPtr, publicPathPtr, errorBuffer, errorBufferSize, device)
             }
 
+            // End timing and calculate runtime
+            let endTime = CFAbsoluteTimeGetCurrent()
+            let runtime = endTime - startTime
+            proofRuntime = formatTimeInterval(runtime)
+            
+            print("Proof generation completed in \(proofRuntime)")
             
             if proof_result == .ProverSuccess {
                 let verify_result: VerifierResult = withCStrings([proofPath, publicPath, documentsVerificationKeyPath]) { ptrs in

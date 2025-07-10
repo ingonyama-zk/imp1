@@ -35,6 +35,51 @@ class ExampleManager {
     
     let examples: [Example] = [
         Example(
+            name: "100k",
+            directory: "100k",
+            description: "A circuit with 100k constraints"
+        ),
+        Example(
+            name: "200k",
+            directory: "200k",
+            description: "A circuit with 200k constraints"
+        ),
+            Example(
+                name: "400k",
+                directory: "400k",
+            description: "A circuit with 400k constraints"
+        ),
+        Example(
+            name: "800k",
+            directory: "800k",
+            description: "A circuit with 800k constraints"
+        ),
+        Example(
+            name: "1600k",
+            directory: "1600k",
+            description: "A circuit with 1600k constraints"
+        ),
+        Example(
+            name: "rarimo-bionet",
+            directory: "rarimo-bionet",
+            description: "rarimo-bionet"
+        ),
+        Example(
+            name: "reclaim-aes-128-ctr",
+            directory: "reclaim-aes-128-ctr",
+            description: "reclaim-aes-128-ctr"
+        ),
+        Example(
+            name: "reclaim-aes-256-ctr",
+            directory: "reclaim-aes-256-ctr",
+            description: "reclaim-aes-256-ctr"
+        ),
+        Example(
+            name: "reclaim-chacha20",
+            directory: "reclaim-chacha20",
+            description: "reclaim-chacha20"
+        ),
+        Example(
             name: "Sha256",
             directory: "sha256",
             description: "Sha256"
