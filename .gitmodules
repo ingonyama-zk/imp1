@@ -1,4 +1,4 @@
 [submodule "vendor/icicle-snark"]
 	path = vendor/icicle-snark
 	url = git@github.com:ingonyama-zk/icicle-snark.git
-	branch = mobile/ios
+	branch = mobile
