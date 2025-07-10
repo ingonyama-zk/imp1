@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FEAA53F2E086DDE002DEB92 /* imp1.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FEAA53D2E086DDC002DEB92 /* imp1.xcframework */; };
-		3FEAA5402E086DDE002DEB92 /* imp1.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3FEAA53D2E086DDC002DEB92 /* imp1.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		79AB665F2E1FB0F6004DA75C /* imp1.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB665D2E1FB0EF004DA75C /* imp1.xcframework */; };
+		79AB66602E1FB0F6004DA75C /* imp1.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB665D2E1FB0EF004DA75C /* imp1.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +18,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3FEAA5402E086DDE002DEB92 /* imp1.xcframework in Embed Frameworks */,
+				79AB66602E1FB0F6004DA75C /* imp1.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,12 +32,138 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		79EC0AD92E09B02E004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Examples/100k;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0ADE2E09B06D004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Examples/200k;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0AE22E09B0C0004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Examples/400k;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0AE62E09B0D9004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Examples/800k;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0AEA2E09B0F3004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Examples/1600k;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0AEE2E09B111004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "Examples/rarimo-bionet";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0B072E0D11DD004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "Examples/reclaim-aes-128-ctr";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0B1A2E0D14E3004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "Examples/reclaim-aes-256-ctr";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79EC0B1F2E0D1509004DBC38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "Examples/reclaim-chacha20";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3FD9A74A2E002BB800297D34 /* IMP1FrameworkExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMP1FrameworkExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3FEAA53D2E086DDC002DEB92 /* imp1.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = imp1.xcframework; sourceTree = "<group>"; };
+		79AB665D2E1FB0EF004DA75C /* imp1.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = imp1.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		79EC0AF32E09B1A5004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Examples/100k/circuit_final.zkey,
+				Examples/100k/README.md,
+				Examples/100k/verification_key.json,
+				Examples/100k/witness.wtns,
+				Examples/200k/circuit_final.zkey,
+				Examples/200k/README.md,
+				Examples/200k/verification_key.json,
+				Examples/200k/witness.wtns,
+				Examples/400k/circuit_final.zkey,
+				Examples/400k/README.md,
+				Examples/400k/verification_key.json,
+				Examples/400k/witness.wtns,
+				Examples/800k/circuit_final.zkey,
+				Examples/800k/README.md,
+				Examples/800k/verification_key.json,
+				Examples/800k/witness.wtns,
+				Examples/1600k/circuit_final.zkey,
+				Examples/1600k/README.md,
+				Examples/1600k/verification_key.json,
+				Examples/1600k/witness.wtns,
+				"Examples/rarimo-bionet/circuit_final.zkey",
+				"Examples/rarimo-bionet/README.md",
+				"Examples/rarimo-bionet/verification_key.json",
+				"Examples/rarimo-bionet/witness.wtns",
+				"Examples/reclaim-aes-128-ctr/circuit_final.zkey",
+				"Examples/reclaim-aes-128-ctr/verification_key.json",
+				"Examples/reclaim-aes-128-ctr/witness.wtns",
+				"Examples/reclaim-aes-256-ctr/circuit_final.zkey",
+				"Examples/reclaim-aes-256-ctr/verification_key.json",
+				"Examples/reclaim-aes-256-ctr/witness.wtns",
+				"Examples/reclaim-chacha20/circuit_final.zkey",
+				"Examples/reclaim-chacha20/verification_key.json",
+				"Examples/reclaim-chacha20/witness.wtns",
+				Examples/sha256/circuit_final.zkey,
+				Examples/sha256/verification_key.json,
+				Examples/sha256/witness.wtns,
+			);
+			target = 3FD9A7492E002BB800297D34 /* IMP1FrameworkExample */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 		3FEAA5482E086F13002DEB92 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
@@ -49,13 +175,104 @@
 				Examples/sha256/witness.wtns,
 			);
 		};
+		79EC0ADD2E09B062004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0AD92E09B02E004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				Examples/100k/circuit_final.zkey,
+				Examples/100k/verification_key.json,
+				Examples/100k/witness.wtns,
+			);
+		};
+		79EC0AE12E09B093004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0ADE2E09B06D004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				Examples/200k/circuit_final.zkey,
+				Examples/200k/verification_key.json,
+				Examples/200k/witness.wtns,
+			);
+		};
+		79EC0AE52E09B0D3004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0AE22E09B0C0004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				Examples/400k/circuit_final.zkey,
+				Examples/400k/verification_key.json,
+				Examples/400k/witness.wtns,
+			);
+		};
+		79EC0AE92E09B0EC004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0AE62E09B0D9004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				Examples/800k/circuit_final.zkey,
+				Examples/800k/verification_key.json,
+				Examples/800k/witness.wtns,
+			);
+		};
+		79EC0AED2E09B10D004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0AEA2E09B0F3004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				Examples/1600k/circuit_final.zkey,
+				Examples/1600k/verification_key.json,
+				Examples/1600k/witness.wtns,
+			);
+		};
+		79EC0AF22E09B128004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0AEE2E09B111004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				"Examples/rarimo-bionet/circuit_final.zkey",
+				"Examples/rarimo-bionet/verification_key.json",
+				"Examples/rarimo-bionet/witness.wtns",
+			);
+		};
+		79EC0B0B2E0D1200004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0B072E0D11DD004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				"Examples/reclaim-aes-128-ctr/circuit_final.zkey",
+				"Examples/reclaim-aes-128-ctr/verification_key.json",
+				"Examples/reclaim-aes-128-ctr/witness.wtns",
+			);
+		};
+		79EC0B1E2E0D14FF004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0B1A2E0D14E3004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				"Examples/reclaim-aes-256-ctr/circuit_final.zkey",
+				"Examples/reclaim-aes-256-ctr/verification_key.json",
+				"Examples/reclaim-aes-256-ctr/witness.wtns",
+			);
+		};
+		79EC0B232E0D1528004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 79EC0B1F2E0D1509004DBC38 /* CopyFiles */;
+			membershipExceptions = (
+				"Examples/reclaim-chacha20/circuit_final.zkey",
+				"Examples/reclaim-chacha20/verification_key.json",
+				"Examples/reclaim-chacha20/witness.wtns",
+			);
+		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3FD9A74C2E002BB800297D34 /* IMP1FrameworkExample */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				79EC0AF32E09B1A5004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "IMP1FrameworkExample" target */,
 				3FEAA5482E086F13002DEB92 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0ADD2E09B062004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0AE12E09B093004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0AE52E09B0D3004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0AE92E09B0EC004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0AED2E09B10D004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0AF22E09B128004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0B0B2E0D1200004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0B1E2E0D14FF004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
+				79EC0B232E0D1528004DBC38 /* Exceptions for "IMP1FrameworkExample" folder in "Copy Files" phase from "IMP1FrameworkExample" target */,
 			);
 			path = IMP1FrameworkExample;
 			sourceTree = "<group>";
@@ -67,7 +284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FEAA53F2E086DDE002DEB92 /* imp1.xcframework in Frameworks */,
+				79AB665F2E1FB0F6004DA75C /* imp1.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +296,7 @@
 			children = (
 				3FD9A74C2E002BB800297D34 /* IMP1FrameworkExample */,
 				3FD9A74B2E002BB800297D34 /* Products */,
-				3FEAA53D2E086DDC002DEB92 /* imp1.xcframework */,
+				79AB665D2E1FB0EF004DA75C /* imp1.xcframework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +320,15 @@
 				3FD9A7482E002BB800297D34 /* Resources */,
 				3FD9A7A92E002DD800297D34 /* Embed Frameworks */,
 				3FD9A7AA2E002E1C00297D34 /* CopyFiles */,
+				79EC0AD92E09B02E004DBC38 /* CopyFiles */,
+				79EC0ADE2E09B06D004DBC38 /* CopyFiles */,
+				79EC0AE22E09B0C0004DBC38 /* CopyFiles */,
+				79EC0AE62E09B0D9004DBC38 /* CopyFiles */,
+				79EC0AEA2E09B0F3004DBC38 /* CopyFiles */,
+				79EC0AEE2E09B111004DBC38 /* CopyFiles */,
+				79EC0B072E0D11DD004DBC38 /* CopyFiles */,
+				79EC0B1A2E0D14E3004DBC38 /* CopyFiles */,
+				79EC0B1F2E0D1509004DBC38 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -298,7 +524,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
@@ -327,7 +553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
