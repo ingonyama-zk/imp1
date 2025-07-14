@@ -280,25 +280,25 @@ struct ParallelProofView: View {
             print("Swift: Got results_ptr, creating array with count: \(numParallelProofs)")
             let buffer = UnsafeBufferPointer(start: results_ptr, count: numParallelProofs)
             let rawPtr = UnsafeRawPointer(results_ptr)
-            let byteCount = numParallelProofs * MemoryLayout<Int64>.stride
+            let byteCount = numParallelProofs * MemoryLayout<ProofResult>.stride
             let bytes = rawPtr.bindMemory(to: UInt8.self, capacity: byteCount)
             print("Swift: Raw bytes of results array:", (0..<byteCount).map { bytes[$0] })
-            print("Swift: MemoryLayout<Int64>.stride = \(MemoryLayout<Int64>.stride)")
-            print("Swift: MemoryLayout<Int64>.size = \(MemoryLayout<Int64>.size)")
-            print("Swift: MemoryLayout<Int64>.alignment = \(MemoryLayout<Int64>.alignment)")
+            print("Swift: MemoryLayout<ProofResult>.stride = \(MemoryLayout<ProofResult>.stride)")
+            print("Swift: MemoryLayout<ProofResult>.size = \(MemoryLayout<ProofResult>.size)")
+            print("Swift: MemoryLayout<ProofResult>.alignment = \(MemoryLayout<ProofResult>.alignment)")
             let results = Array(buffer)
             print("Swift: Created results array with \(results.count) elements")
             
             for (index, result) in results.enumerated() {
-                print("Swift: Processing result \(index + 1): value=\(result)")
-                if result == 0 {
-                    print("Swift: Result \(index + 1) is Success (0)")
+                print("Swift: Processing result \(index + 1): value=\(result.value)")
+                if result.value == 0 {
+                    print("Swift: Result \(index + 1) is Success")
                     proofResults.append("✅ Success")
-                } else if result == 1 {
-                    print("Swift: Result \(index + 1) is Failure (1)")
+                } else if result.value == 1 {
+                    print("Swift: Result \(index + 1) is Failure")
                     proofResults.append("❌ Failed")
                 } else {
-                    print("Swift: Result \(index + 1) is unknown value: \(result)")
+                    print("Swift: Result \(index + 1) is unknown value: \(result.value)")
                     proofResults.append("❓ Unknown result")
                 }
             }

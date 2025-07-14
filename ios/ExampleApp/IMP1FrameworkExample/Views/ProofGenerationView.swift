@@ -188,7 +188,7 @@ struct ProofGenerationView: View {
             
             print("Proof generation completed in \(proofRuntime)")
             
-            if proof_result == .ProverSuccess {
+            if proof_result.value == 0 {
                 let verify_result: VerifierResult = withCStrings([proofPath, publicPath, documentsVerificationKeyPath]) { ptrs in
                     let proofPathPtr = ptrs[0]
                     let publicPathPtr = ptrs[1]

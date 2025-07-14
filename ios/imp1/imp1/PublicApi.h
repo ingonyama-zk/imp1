@@ -13,15 +13,12 @@ typedef NS_ENUM(NSInteger, DeviceType) {
 };
 
 /**
- * @enum ProofResult
+ * @struct ProofResult
  * @brief Result of proof generation attempt
- * @constant ProverSuccess Proof was successfully generated
- * @constant ProverFailure Proof generation failed
  */
-typedef NS_ENUM(NSInteger, ProofResult) {
-    ProverSuccess,
-    ProverFailure
-};
+typedef struct {
+    int value;
+} ProofResult;
 
 /**
  * @enum VerifierResult
@@ -79,9 +76,9 @@ VerifierResult verify(
  * @param error_msg_maxsize Maximum size of the error message buffer
  * @param device Type of device to use for computation
  * @param max_batch_size Maximum number of proofs to process in a single batch (0 for default of 10)
- * @return Pointer to array of long long integers indicating success (0) or failure (1) of each proof generation
+ * @return Pointer to array of ProofResult values indicating success or failure of each proof generation
  */
-long long* parallel_prove(
+const ProofResult* parallel_prove(
     const char** witness_paths,
     const char* zkey_path,
     const char** proof_paths,
@@ -98,6 +95,6 @@ long long* parallel_prove(
  * @param results Pointer to the results array returned by parallel_prove
  * @param count Number of results in the array
  */
-void free_parallel_results(long long* results, unsigned long long count);
+void free_parallel_results(const ProofResult* results, unsigned long long count);
 
 #endif 

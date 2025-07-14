@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		79AB665F2E1FB0F6004DA75C /* imp1.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB665D2E1FB0EF004DA75C /* imp1.xcframework */; };
-		79AB66602E1FB0F6004DA75C /* imp1.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB665D2E1FB0EF004DA75C /* imp1.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		79AB66932E251ACF004DA75C /* imp1.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB66912E251ACD004DA75C /* imp1.xcframework */; };
+		79AB66942E251ACF004DA75C /* imp1.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB66912E251ACD004DA75C /* imp1.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +18,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				79AB66602E1FB0F6004DA75C /* imp1.xcframework in Embed Frameworks */,
+				79AB66942E251ACF004DA75C /* imp1.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,7 +117,7 @@
 
 /* Begin PBXFileReference section */
 		3FD9A74A2E002BB800297D34 /* IMP1FrameworkExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMP1FrameworkExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		79AB665D2E1FB0EF004DA75C /* imp1.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = imp1.xcframework; sourceTree = "<group>"; };
+		79AB66912E251ACD004DA75C /* imp1.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = imp1.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -284,7 +284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79AB665F2E1FB0F6004DA75C /* imp1.xcframework in Frameworks */,
+				79AB66932E251ACF004DA75C /* imp1.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,7 +296,7 @@
 			children = (
 				3FD9A74C2E002BB800297D34 /* IMP1FrameworkExample */,
 				3FD9A74B2E002BB800297D34 /* Products */,
-				79AB665D2E1FB0EF004DA75C /* imp1.xcframework */,
+				79AB66912E251ACD004DA75C /* imp1.xcframework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -524,7 +524,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
@@ -553,7 +553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
