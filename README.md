@@ -32,6 +32,9 @@ Up to 3x faster than Rapidsnark
 ✅ **Mobile-optimized Groth16 prover**
 An efficient implementation of Groth16, built for mobile devices.
 
+🚀 **Parallel proof generation on iOS**
+Generate multiple proofs simultaneously with configurable batch sizes for optimal performance.
+
 ---
 
 ## 📊 Performance

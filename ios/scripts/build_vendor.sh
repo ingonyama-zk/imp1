@@ -38,11 +38,11 @@ build_target() {
     rustup target add "$target" 2>/dev/null || true
     
     # Build with iOS-compatible flags
-    RUSTFLAGS="-C opt-level=3" \
-    cargo build --target "$target" --release
+    RUSTFLAGS="-C opt-level=3 -C link-arg=-lc++" \
+    cargo build --target "$target" --release --features ios
     
     # Copy Rust library to output directory
-    cp "target/$target/release/libicicle_snark_ios.a" "$OUTPUT_DIR/$output_name"
+    cp "target/$target/release/libicicle_snark.a" "$OUTPUT_DIR/$output_name"
     
     # Copy icicle libraries
     local icicle_dir="target/$target/release/deps/icicle/lib"
@@ -59,11 +59,19 @@ build_target() {
         cp "$icicle_dir/libicicle_field_bn254.a" "$OUTPUT_DIR/libicicle_field_bn254${arch_suffix}.a"
         cp "$icicle_dir/libicicle_hash.a" "$OUTPUT_DIR/libicicle_hash${arch_suffix}.a"
         
-        # Copy icicle metal backends as well
-        cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_curve_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_curve_bn254${arch_suffix}.a"
-        cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_field_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_field_bn254${arch_suffix}.a"
-        cp "$icicle_dir/backend/metal/libicicle_backend_metal_device.a" "$OUTPUT_DIR/libicicle_metal_backend_device${arch_suffix}.a"
-        cp "$icicle_dir/backend/metal/libicicle_backend_metal_hash.a" "$OUTPUT_DIR/libicicle_metal_backend_hash${arch_suffix}.a"
+        # Copy icicle metal backends as well (if they exist)
+        if [ -f "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_curve_bn254.a" ]; then
+            cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_curve_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_curve_bn254${arch_suffix}.a"
+        fi
+        if [ -f "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_field_bn254.a" ]; then
+            cp "$icicle_dir/backend/bn254/metal/libicicle_backend_metal_field_bn254.a" "$OUTPUT_DIR/libicicle_metal_backend_field_bn254${arch_suffix}.a"
+        fi
+        if [ -f "$icicle_dir/backend/metal/libicicle_backend_metal_device.a" ]; then
+            cp "$icicle_dir/backend/metal/libicicle_backend_metal_device.a" "$OUTPUT_DIR/libicicle_metal_backend_device${arch_suffix}.a"
+        fi
+        if [ -f "$icicle_dir/backend/metal/libicicle_backend_metal_hash.a" ]; then
+            cp "$icicle_dir/backend/metal/libicicle_backend_metal_hash.a" "$OUTPUT_DIR/libicicle_metal_backend_hash${arch_suffix}.a"
+        fi
 
         echo -e "${GREEN}✓ Copied icicle libraries for $target${NC}"
     else
