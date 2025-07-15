@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		79AB669B2E263624004DA75C /* imp1.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB66992E26361D004DA75C /* imp1.xcframework */; };
+		79AB669C2E263624004DA75C /* imp1.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79AB66992E26361D004DA75C /* imp1.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		3FD9A7A92E002DD800297D34 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -13,6 +18,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				79AB669C2E263624004DA75C /* imp1.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +63,7 @@
 
 /* Begin PBXFileReference section */
 		3FD9A74A2E002BB800297D34 /* IMP1FrameworkExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMP1FrameworkExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79AB66992E26361D004DA75C /* imp1.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = imp1.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -163,6 +170,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79AB669B2E263624004DA75C /* imp1.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +182,7 @@
 			children = (
 				3FD9A74C2E002BB800297D34 /* IMP1FrameworkExample */,
 				3FD9A74B2E002BB800297D34 /* Products */,
+				79AB66992E26361D004DA75C /* imp1.xcframework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -395,7 +404,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
@@ -424,7 +433,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"IMP1FrameworkExample/Preview Content\"";
 				DEVELOPMENT_TEAM = Y89T9P257W;
 				ENABLE_PREVIEWS = YES;
