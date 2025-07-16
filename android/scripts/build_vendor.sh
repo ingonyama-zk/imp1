@@ -2,12 +2,12 @@
 set -e
 
 # --- Configuration ---
-DEFAULT_NDK_VERSION="r26b"
 API_LEVEL=24
 
 # --- Argument Parsing ---
-NDK_VERSION=""
+NDK_VERSION="r27c"
 SAVE_NDK=false
+DEBUG=false
 for arg in "$@"; do
   case $arg in
     --save-ndk)
@@ -16,10 +16,12 @@ for arg in "$@"; do
     --ndk-version=*)
       NDK_VERSION="${arg#--ndk-version=}"
       ;;
+    --debug)
+      DEBUG=true
+      ;;
     *)
-      if [ -z "$NDK_VERSION" ]; then
-        NDK_VERSION="$DEFAULT_NDK_VERSION"
-      fi
+      echo "Unknown argument: $arg"
+      exit 1
       ;;
   esac
 done
@@ -125,8 +127,13 @@ build_for_target() {
     export ADDITIONAL_SYSTEM_LIBRARY_PATHS="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/$HOST_TAG/sysroot/usr/lib/$sysroot_target_triple/$API_LEVEL"
 
     cd "$RUST_PROJECT_DIR"
-    cargo clean
-    cargo build --target "$target_triple" --release
+    # cargo clean
+
+    if [ "$DEBUG" = true ]; then
+        CARGO_PROFILE_RELEASE_DEBUG=true cargo build --target "$target_triple" --features android --release --verbose
+    else
+        cargo build --target "$target_triple" --features android --release --verbose
+    fi 
     cd "$SCRIPT_DIR"
 
     unset CMAKE_CONFIGURE_OPTIONS CC CXX AR CARGO_TARGET_$(echo "$target_triple" | tr 'a-z-' 'A-Z_')_LINKER

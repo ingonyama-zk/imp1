@@ -4,17 +4,27 @@ plugins {
 }
 
 android {
-    namespace = "com.example.imp1_aar_example"
+    namespace = "com.ingonyama.imp1_aar_example"
     compileSdk = 36
 
+    // Define asset pack names in one place
+    val assetPackNames = listOf("zkey_pack_0", "zkey_pack_1", "zkey_pack_rarimo", "zkey_pack_zkp2p")
+
     defaultConfig {
-        applicationId = "com.example.imp1_aar_example"
+        applicationId = "com.ingonyama.imp1_aar_example"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.add("arm64-v8a")
+        }
+
+        // Expose asset pack names to runtime via BuildConfig
+        buildConfigField("String[]", "ASSET_PACK_NAMES", "{${assetPackNames.joinToString(",") { "\"$it\"" }}}")
     }
 
     buildTypes {
@@ -25,7 +35,23 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            isPseudoLocalesEnabled = true
+            isShrinkResources = false
+            // Enable profiling
+            isProfileable = true
+            isDebuggable = false
+
+            ndk.debugSymbolLevel = "FULL"
+
+            packaging.jniLibs.keepDebugSymbols.add("**/*.so")
+        }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
 //    compileOptions {
 //        sourceCompatibility = JavaVersion.VERSION_1_8
 //        targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,6 +60,9 @@ android {
 //    kotlinOptions {
 //        jvmTarget = "1.8"
 //    }
+
+    // Configure asset packs for zkey files using the defined names
+    assetPacks += assetPackNames.map { ":$it" }
 }
 
 kotlin {
@@ -51,4 +80,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     implementation(files("libs/imp1-0.2.1.aar"))
+    
+    // Play Asset Delivery dependencies
+    implementation("com.google.android.play:asset-delivery-ktx:2.3.0")
 }

@@ -1,4 +1,4 @@
-package com.example.imp1_aar_example
+package com.ingonyama.imp1_aar_example
 
 import org.junit.Test
 

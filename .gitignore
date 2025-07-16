@@ -8,3 +8,7 @@ ios/ExampleApp/IMP1FrameworkExample/Examples/400k/
 ios/ExampleApp/IMP1FrameworkExample/Examples/800k/
 ios/ExampleApp/IMP1FrameworkExample/Examples/1600k/
 ios/ExampleApp/IMP1FrameworkExample/Examples/rarimo-bionet/
+
+.idea
+bundletool-all.jar
+.kotlin

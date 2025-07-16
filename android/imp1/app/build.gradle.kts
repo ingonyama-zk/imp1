@@ -23,12 +23,28 @@ android {
         ndk {
             abiFilters.add("arm64-v8a")
         }
+
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        debug {
+            isJniDebuggable = true
+            isPseudoLocalesEnabled = true
+            isShrinkResources = false
+
+            ndk.debugSymbolLevel = "FULL"
+
+            externalNativeBuild.cmake {
+                cppFlags += "-g"
+                cppFlags += "-O0"
+                arguments += "-DCMAKE_BUILD_TYPE=Debug"
+            }
+
+            packagingOptions.jniLibs.keepDebugSymbols.add("**/*.so")
         }
     }
     compileOptions {
@@ -63,6 +79,5 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.16.0")
 }

@@ -20,4 +20,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "IMP1_AAR_Example"
 include(":app")
+include(":zkey_pack_0")
+include(":zkey_pack_1")
+include(":zkey_pack_rarimo")
+include(":zkey_pack_zkp2p")
  
