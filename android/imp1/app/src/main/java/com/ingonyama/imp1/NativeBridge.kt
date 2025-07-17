@@ -8,6 +8,19 @@ enum class DeviceType(val value: Int) {
     Cpu(1),
 }
 
+data class ProofResult(val value: Int) {
+    companion object {
+        val ProverSuccess = ProofResult(0)
+        val ProverFailure = ProofResult(1)
+        
+        fun fromInt(value: Int) = when (value) {
+            0 -> ProverSuccess
+            1 -> ProverFailure
+            else -> ProverFailure
+        }
+    }
+}
+
 enum class ProverResult(val value: Int) {
     ProverSuccess(0),
     ProverFailure(1);
@@ -85,6 +98,64 @@ object NativeBridge {
         )
     }
 
+    /**
+     * Generates multiple proofs in parallel.
+     *
+     * @param witnessPaths Array of paths to witness files.
+     * @param zkeyPath Path to the zkey file (shared for all proofs).
+     * @param proofPaths Array of paths where output proofs will be saved.
+     * @param publicPaths Array of paths where output public signals will be saved.
+     * @param deviceType The type of device to use for proving.
+     * @param maxBatchSize Maximum batch size for processing (0 for default).
+     * @return Array of ProofResult indicating success/failure for each proof.
+     * @throws ProverException if the Rust parallel_prove function returns a failure.
+     */
+    fun parallelProve(
+        witnessPaths: Array<String>,
+        zkeyPath: String,
+        proofPaths: Array<String>,
+        publicPaths: Array<String>,
+        deviceType: DeviceType,
+        maxBatchSize: Long = 0
+    ): Array<ProofResult> {
+        require(witnessPaths.size == proofPaths.size && proofPaths.size == publicPaths.size) {
+            "All path arrays must have the same size"
+        }
+        
+        val errorMsgMaxSize = 256
+        val errorBuffer = ByteBuffer.allocateDirect(errorMsgMaxSize).order(ByteOrder.nativeOrder())
+        
+        val resultsPtr = parallelProveNative(
+            witnessPaths,
+            zkeyPath,
+            proofPaths,
+            publicPaths,
+            errorBuffer,
+            deviceType.value,
+            maxBatchSize
+        )
+        
+        if (resultsPtr == 0L) {
+            // Error occurred
+            val errorBytes = ByteArray(errorBuffer.position())
+            errorBuffer.rewind()
+            errorBuffer.get(errorBytes)
+            val errorMessage = String(errorBytes, StandardCharsets.UTF_8).trim()
+            throw ProverException(errorMessage)
+        }
+        
+        // Convert results pointer to array
+        val results = Array(witnessPaths.size) { index ->
+            val resultValue = getProverResultValue(resultsPtr, index)
+            ProofResult.fromInt(resultValue)
+        }
+        
+        // Free the native memory
+        freeParallelResultsNative(resultsPtr, witnessPaths.size)
+        
+        return results
+    }
+
     // Private external functions that link to the JNI bridge
     private external fun proveNative(
         witnessPath: String,
@@ -100,4 +171,18 @@ object NativeBridge {
         publicPath: String,
         vkPath: String
     ): Int
+
+    private external fun parallelProveNative(
+        witnessPaths: Array<String>,
+        zkeyPath: String,
+        proofPaths: Array<String>,
+        publicPaths: Array<String>,
+        errorMsgBuffer: ByteBuffer,
+        deviceType: Int,
+        maxBatchSize: Long
+    ): Long
+
+    private external fun getProverResultValue(resultsPtr: Long, index: Int): Int
+
+    private external fun freeParallelResultsNative(resultsPtr: Long, count: Int)
 }

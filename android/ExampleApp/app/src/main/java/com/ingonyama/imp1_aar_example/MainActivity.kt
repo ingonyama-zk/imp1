@@ -2,9 +2,14 @@ package com.ingonyama.imp1_aar_example
 
 import android.os.Bundle
 import android.view.View
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +23,7 @@ import com.google.android.play.core.assetpacks.model.AssetPackStatus
 import com.ingonyama.imp1.DeviceType
 import com.ingonyama.imp1.NativeBridge
 import com.ingonyama.imp1.ProverException
+import com.ingonyama.imp1.ProofResult
 import com.ingonyama.imp1.VerifierResult
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +72,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var downloadProgressBar: ProgressBar
     private lateinit var downloadStatusTextView: TextView
     
+    // Parallel proof UI components
+    private lateinit var modeRadioGroup: RadioGroup
+    private lateinit var singleModeRadio: RadioButton
+    private lateinit var parallelModeRadio: RadioButton
+    private lateinit var parallelConfigLayout: LinearLayout
+    private lateinit var parallelCountSeekBar: SeekBar
+    private lateinit var parallelCountTextView: TextView
+    
+    // Parallel proof state
+    private var isParallelMode = false
+    private var numParallelProofs = 2
+    private var proofResults = mutableListOf<String>()
+    private var verificationResults = mutableListOf<String>()
+    private var proofRuntime = ""
+    private var verificationRuntime = ""
+    
     private lateinit var assetPackManager: AssetPackManager
     private val assetPackNames = BuildConfig.ASSET_PACK_NAMES.toList()
     private val packDownloadProgress = mutableMapOf<String, Int>()
@@ -82,6 +104,14 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         downloadProgressBar = findViewById(R.id.downloadProgressBar)
         downloadStatusTextView = findViewById(R.id.downloadStatusTextView)
+        
+        // Initialize parallel proof UI components
+        modeRadioGroup = findViewById(R.id.modeRadioGroup)
+        singleModeRadio = findViewById(R.id.singleModeRadio)
+        parallelModeRadio = findViewById(R.id.parallelModeRadio)
+        parallelConfigLayout = findViewById(R.id.parallelConfigLayout)
+        parallelCountSeekBar = findViewById(R.id.parallelCountSeekBar)
+        parallelCountTextView = findViewById(R.id.parallelCountTextView)
 
         // Initialize Asset Pack Manager
         assetPackManager = AssetPackManagerFactory.getInstance(this)
@@ -91,10 +121,17 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         exampleSpinner.adapter = adapter
 
+        // Set up parallel proof UI event handlers
+        setupParallelProofUI()
+        
         // Set the click listener for the run button
         runButton.setOnClickListener {
             val selectedExample = exampleSpinner.selectedItem as Example
-            runFullTest(selectedExample)
+            if (isParallelMode) {
+                runParallelProofTest(selectedExample)
+            } else {
+                runFullTest(selectedExample)
+            }
         }
         
         // Initially disable the run button until asset packs are ready
@@ -364,6 +401,275 @@ class MainActivity : AppCompatActivity() {
         assets.open(assetName).use { inputStream ->
             FileOutputStream(destinationFile).use { outputStream ->
                 inputStream.copyTo(outputStream)
+            }
+        }
+    }
+
+    /**
+     * Sets up the parallel proof UI event handlers.
+     */
+    private fun setupParallelProofUI() {
+        // Mode toggle handler
+        modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            isParallelMode = checkedId == R.id.parallelModeRadio
+            updateUIForMode()
+        }
+        
+        // Parallel count seekbar handler
+        parallelCountSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                numParallelProofs = progress + 1 // SeekBar starts at 0, we want 1-50
+                parallelCountTextView.text = numParallelProofs.toString()
+            }
+            
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+    }
+    
+    /**
+     * Updates the UI based on the selected mode.
+     */
+    private fun updateUIForMode() {
+        if (isParallelMode) {
+            parallelConfigLayout.visibility = View.VISIBLE
+            runButton.text = "Run Parallel Proofs"
+        } else {
+            parallelConfigLayout.visibility = View.GONE
+            runButton.text = "Run Single Proof"
+        }
+    }
+    
+    /**
+     * Runs parallel proof generation and verification.
+     */
+    private fun runParallelProofTest(example: Example) {
+        lifecycleScope.launch(Dispatchers.IO + CoroutineName("IMP1 Parallel Prove+Verify")) {
+            // Show progress and disable UI on the Main thread
+            withContext(Dispatchers.Main) {
+                logTextView.text = ""
+                progressBar.visibility = View.VISIBLE
+                runButton.isEnabled = false
+                log("Starting parallel proof test for: ${example.name}")
+                log("Number of parallel proofs: $numParallelProofs")
+            }
+            
+            Log.d("IMP1_DEBUG", "Entered runParallelProofTest function")
+            Log.d("IMP1_DEBUG", "Example name: ${example.name}")
+            Log.d("IMP1_DEBUG", "Example witness asset: ${example.witnessAsset}")
+            Log.d("IMP1_DEBUG", "Example zkey asset: ${example.zkeyAsset}")
+            Log.d("IMP1_DEBUG", "Example vk asset: ${example.vkAsset}")
+            Log.d("IMP1_DEBUG", "Example asset pack: ${example.assetPack}")
+            
+            log("DEBUG: Entered runParallelProofTest function")
+            log("DEBUG: Example name: ${example.name}")
+            log("DEBUG: Example witness asset: ${example.witnessAsset}")
+            log("DEBUG: Example zkey asset: ${example.zkeyAsset}")
+            log("DEBUG: Example vk asset: ${example.vkAsset}")
+            log("DEBUG: Example asset pack: ${example.assetPack}")
+
+            // Check if the required asset pack is available
+            Log.d("IMP1_DEBUG", "Checking asset pack availability...")
+            log("DEBUG: Checking asset pack availability...")
+            val packLocation = assetPackManager.getPackLocation(example.assetPack)
+            Log.d("IMP1_DEBUG", "Pack location: $packLocation")
+            log("DEBUG: Pack location: $packLocation")
+            if (packLocation == null) {
+                Log.d("IMP1_DEBUG", "Asset pack not available: ${example.assetPack}")
+                log("❌ Asset pack '${example.assetPack}' not available. Please wait for download to complete.")
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    runButton.isEnabled = true
+                }
+                return@launch
+            }
+            Log.d("IMP1_DEBUG", "Asset pack is available")
+            log("DEBUG: Asset pack is available")
+
+            // The cache directory is a good place for temporary files.
+            val workingDir = cacheDir
+            // Clear previous output files if they exist
+            workingDir.listFiles()?.filter { it.name.endsWith(".proof") || it.name.endsWith(".public") }?.forEach { it.delete() }
+
+            // Define file paths for inputs and outputs
+            val witnessFile = File(workingDir, "witness.wtns")
+            val zkeyFile = File(workingDir, "zkey.zkey")
+            val vkFile = File(workingDir, "vk.json")
+            
+            // Arrays for parallel proof paths
+            val witnessPaths = Array(numParallelProofs) { i -> File(workingDir, "witness_$i.wtns") }
+            val proofPaths = Array(numParallelProofs) { i -> File(workingDir, "proof_$i.proof") }
+            val publicPaths = Array(numParallelProofs) { i -> File(workingDir, "public_$i.public") }
+
+            try {
+                // Step 1: Copy asset files to the app's private storage
+                Log.d("IMP1_DEBUG", "Starting to copy assets...")
+                log("Copying assets to device storage...")
+                Log.d("IMP1_DEBUG", "Copying witness file: ${example.witnessAsset}")
+                copyAssetToFile(example.witnessAsset, witnessFile)
+                Log.d("IMP1_DEBUG", "Copying zkey file: ${example.zkeyAsset}")
+                copyZkeyFromAssetPack(packLocation, example.zkeyAsset, zkeyFile)
+                Log.d("IMP1_DEBUG", "ZKey file copied. Exists: ${zkeyFile.exists()}, Size: ${zkeyFile.length()} bytes")
+                Log.d("IMP1_DEBUG", "Copying vk file: ${example.vkAsset}")
+                copyAssetToFile(example.vkAsset, vkFile)
+                
+                // Copy witness file multiple times for parallel processing
+                for (i in 0 until numParallelProofs) {
+                    witnessFile.copyTo(witnessPaths[i], overwrite = true)
+                }
+                log("...copying complete.")
+                
+                // Debug: Check if files exist
+                log("Debug: Checking file existence...")
+                log("  Witness file exists: ${witnessFile.exists()}")
+                log("  ZKey file exists: ${zkeyFile.exists()}")
+                log("  VK file exists: ${vkFile.exists()}")
+                log("  VK file path: ${vkFile.absolutePath}")
+                log("  VK file size: ${vkFile.length()} bytes")
+
+                // Step 2: Run the parallel prover
+                Log.d("IMP1_DEBUG", "About to start parallel prove...")
+                log("\nRunning Parallel Prover...")
+                Log.d("IMP1_DEBUG", "About to call NativeBridge.parallelProve")
+                log("DEBUG: About to call NativeBridge.parallelProve")
+                Log.d("IMP1_DEBUG", "Witness paths count: ${witnessPaths.size}")
+                log("DEBUG: Witness paths count: ${witnessPaths.size}")
+                Log.d("IMP1_DEBUG", "Proof paths count: ${proofPaths.size}")
+                log("DEBUG: Proof paths count: ${proofPaths.size}")
+                Log.d("IMP1_DEBUG", "Public paths count: ${publicPaths.size}")
+                log("DEBUG: Public paths count: ${publicPaths.size}")
+                Log.d("IMP1_DEBUG", "ZKey path: ${zkeyFile.absolutePath}")
+                log("DEBUG: ZKey path: ${zkeyFile.absolutePath}")
+                try {
+                                    Log.d("IMP1_DEBUG", "Calling NativeBridge.parallelProve...")
+                Log.d("IMP1_DEBUG", "Witness paths: ${witnessPaths.map { it.absolutePath }}")
+                Log.d("IMP1_DEBUG", "Proof paths: ${proofPaths.map { it.absolutePath }}")
+                Log.d("IMP1_DEBUG", "Public paths: ${publicPaths.map { it.absolutePath }}")
+                Log.d("IMP1_DEBUG", "ZKey path: ${zkeyFile.absolutePath}")
+                
+                // Create the arrays for JNI
+                val witnessPathsArray = witnessPaths.map { it.absolutePath }.toTypedArray()
+                val proofPathsArray = proofPaths.map { it.absolutePath }.toTypedArray()
+                val publicPathsArray = publicPaths.map { it.absolutePath }.toTypedArray()
+                
+                // Debug: Check array contents before JNI call
+                Log.d("IMP1_DEBUG", "JNI Arrays before call:")
+                for (i in 0 until witnessPathsArray.size) {
+                    Log.d("IMP1_DEBUG", "  witnessPathsArray[$i]: ${witnessPathsArray[i]}")
+                    Log.d("IMP1_DEBUG", "  proofPathsArray[$i]: ${proofPathsArray[i]}")
+                    Log.d("IMP1_DEBUG", "  publicPathsArray[$i]: ${publicPathsArray[i]}")
+                }
+                
+                val proveTime = measureTimeMillis {
+                    val results = NativeBridge.parallelProve(
+                            witnessPaths = witnessPathsArray,
+                            zkeyPath = zkeyFile.absolutePath,
+                            proofPaths = proofPathsArray,
+                            publicPaths = publicPathsArray,
+                            deviceType = DeviceType.Cpu,
+                            maxBatchSize = 0L
+                        )
+                        
+                        // Process results
+                        proofResults.clear()
+                        for ((index, result) in results.withIndex()) {
+                            when (result.value) {
+                                0 -> {
+                                    proofResults.add("✅ Proof ${index + 1}: Success")
+                                    log("✅ Proof ${index + 1}: Success")
+                                }
+                                1 -> {
+                                    proofResults.add("❌ Proof ${index + 1}: Failed")
+                                    log("❌ Proof ${index + 1}: Failed")
+                                }
+                                else -> {
+                                    proofResults.add("❓ Proof ${index + 1}: Unknown result")
+                                    log("❓ Proof ${index + 1}: Unknown result")
+                                }
+                            }
+                        }
+                    }
+                    log("✅ Parallel Prove completed")
+                    log("   Time taken: $proveTime ms")
+                    proofRuntime = formatTimeInterval(proveTime.toDouble())
+                    log("   Runtime: $proofRuntime")
+                } catch (e: ProverException) {
+                    log("❌ Parallel Prove FAILED")
+                    log("   Error: ${e.message}")
+                    return@launch
+                } finally {
+                    // Update UI on the Main thread after this block is done
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.GONE
+                        runButton.isEnabled = true
+                    }
+                }
+
+                // Step 3: Run the verifier for each proof
+                log("\nRunning Verifier for all proofs...")
+                verificationResults.clear()
+                val verifyTime = measureTimeMillis {
+                    for (i in 0 until numParallelProofs) {
+                        val proofPath = proofPaths[i]
+                        val publicPath = publicPaths[i]
+                        
+                        // Debug: Check files before verification
+                        log("Debug: Verifying proof ${i + 1}...")
+                        log("  Proof file exists: ${proofPath.exists()}")
+                        log("  Public file exists: ${publicPath.exists()}")
+                        log("  VK file exists: ${vkFile.exists()}")
+                        log("  Proof path: ${proofPath.absolutePath}")
+                        log("  Public path: ${publicPath.absolutePath}")
+                        log("  VK path: ${vkFile.absolutePath}")
+                        
+                        val result = NativeBridge.verify(
+                            proofPath = proofPath.absolutePath,
+                            publicPath = publicPath.absolutePath,
+                            vkPath = vkFile.absolutePath
+                        )
+
+                        when (result) {
+                            VerifierResult.VerifierSuccess -> {
+                                verificationResults.add("✅ Proof ${i + 1}: Verified")
+                                log("✅ Proof ${i + 1}: Verified")
+                            }
+                            VerifierResult.VerifierFailure -> {
+                                verificationResults.add("❌ Proof ${i + 1}: Verification Failed")
+                                log("❌ Proof ${i + 1}: Verification Failed")
+                            }
+                        }
+                    }
+                }
+                log("✅ Verification completed")
+                log("   Time taken: $verifyTime ms")
+                verificationRuntime = formatTimeInterval(verifyTime.toDouble())
+                log("   Runtime: $verificationRuntime")
+
+            } catch (e: IOException) {
+                log("\n❌ CRITICAL ERROR: Could not copy asset files.")
+                log("   Make sure the filenames in the `examples` list are correct.")
+                log("   Error: ${e.message}")
+            } finally {
+                // Final UI update, re-enabling the button and hiding the progress bar.
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    runButton.isEnabled = true
+                }
+            }
+        }
+    }
+    
+    /**
+     * Formats a time interval in milliseconds to a human-readable string.
+     */
+    private fun formatTimeInterval(timeMs: Double): String {
+        return when {
+            timeMs < 1000 -> "${String.format("%.1f", timeMs)} ms"
+            timeMs < 60000 -> "${String.format("%.2f", timeMs / 1000)} seconds"
+            else -> {
+                val minutes = (timeMs / 60000).toInt()
+                val seconds = (timeMs % 60000) / 1000
+                "$minutes minutes ${String.format("%.2f", seconds)} seconds"
             }
         }
     }
