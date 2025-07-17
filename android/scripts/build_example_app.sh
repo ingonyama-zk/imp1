@@ -1,17 +1,23 @@
 #!/bin/bash
 set -e
 
-# Set JAVA_HOME to use Java 21 (generic approach)
-# Try to find Java 21 in common installation paths
-find_java_21() {
-    # Common Java 21 installation paths
+# Set JAVA_HOME to use Java 21+ (generic approach)
+# Try to find Java 21+ in common installation paths
+find_java_21_plus() {
+    # Common Java 21+ installation paths
     local java_paths=(
         "/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home"  # macOS
+        "/Library/Java/JavaVirtualMachines/jdk-23.jdk/Contents/Home"  # macOS
         "/usr/lib/jvm/java-21-openjdk"                               # Linux OpenJDK
+        "/usr/lib/jvm/java-23-openjdk"                               # Linux OpenJDK
         "/usr/lib/jvm/java-21-oracle"                                # Linux Oracle JDK
+        "/usr/lib/jvm/java-23-oracle"                                # Linux Oracle JDK
         "/usr/java/jdk-21"                                           # Linux alternative
+        "/usr/java/jdk-23"                                           # Linux alternative
         "C:/Program Files/Java/jdk-21"                               # Windows
+        "C:/Program Files/Java/jdk-23"                               # Windows
         "C:/Program Files/Eclipse Adoptium/jdk-21"                   # Windows Eclipse Temurin
+        "C:/Program Files/Eclipse Adoptium/jdk-23"                   # Windows Eclipse Temurin
     )
     
     for path in "${java_paths[@]}"; do
@@ -21,11 +27,11 @@ find_java_21() {
         fi
     done
     
-    # Try to find Java 21 using system commands
+    # Try to find Java 21+ using system commands
     if command -v java &> /dev/null; then
         local java_version=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2)
-        if [[ "$java_version" == 21* ]]; then
-            # If current Java is 21, try to find its home
+        if [[ "$java_version" == 21* ]] || [[ "$java_version" == 22* ]] || [[ "$java_version" == 23* ]]; then
+            # If current Java is 21+, try to find its home
             if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
                 echo "$JAVA_HOME"
                 return 0
@@ -36,16 +42,16 @@ find_java_21() {
     return 1
 }
 
-# Set JAVA_HOME if not already set or if we need Java 21
-if [ -z "$JAVA_HOME" ] || ! java -version 2>&1 | grep -q "version \"21"; then
-    JAVA_21_HOME=$(find_java_21)
-    if [ -n "$JAVA_21_HOME" ]; then
-        export JAVA_HOME="$JAVA_21_HOME"
+# Set JAVA_HOME if not already set or if we need Java 21+
+if [ -z "$JAVA_HOME" ] || ! java -version 2>&1 | grep -q "version \"2[123]"; then
+    JAVA_21_PLUS_HOME=$(find_java_21_plus)
+    if [ -n "$JAVA_21_PLUS_HOME" ]; then
+        export JAVA_HOME="$JAVA_21_PLUS_HOME"
         export PATH="$JAVA_HOME/bin:$PATH"
         echo "Set JAVA_HOME to: $JAVA_HOME"
     else
-        echo "Warning: Java 21 not found in common locations."
-        echo "Please ensure Java 21 is installed and JAVA_HOME is set correctly."
+        echo "Warning: Java 21+ not found in common locations."
+        echo "Please ensure Java 21+ is installed and JAVA_HOME is set correctly."
         echo "Current Java version:"
         java -version 2>&1 || echo "Java not found"
     fi

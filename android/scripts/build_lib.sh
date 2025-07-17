@@ -39,7 +39,7 @@ echo "Building AAR library..."
 
 # Step 1: Build the Rust vendor library first
 echo "Step 1: Building Rust vendor library..."
-"$(dirname "$0")/build_vendor.sh" $DEBUG
+"$(dirname "$0")/build_vendor.sh" $DEBUG --save-ndk
 
 # Navigate to the Android project directory
 cd "$(dirname "$0")/../imp1"
