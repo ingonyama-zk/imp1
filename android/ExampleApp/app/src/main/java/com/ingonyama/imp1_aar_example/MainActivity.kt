@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -77,7 +76,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var singleModeRadio: RadioButton
     private lateinit var parallelModeRadio: RadioButton
     private lateinit var parallelConfigLayout: LinearLayout
-    private lateinit var parallelCountSeekBar: SeekBar
+    private lateinit var minusButton: TextView
+    private lateinit var plusButton: TextView
     private lateinit var parallelCountTextView: TextView
     
     // Parallel proof state
@@ -110,7 +110,8 @@ class MainActivity : AppCompatActivity() {
         singleModeRadio = findViewById(R.id.singleModeRadio)
         parallelModeRadio = findViewById(R.id.parallelModeRadio)
         parallelConfigLayout = findViewById(R.id.parallelConfigLayout)
-        parallelCountSeekBar = findViewById(R.id.parallelCountSeekBar)
+        minusButton = findViewById(R.id.minusButton)
+        plusButton = findViewById(R.id.plusButton)
         parallelCountTextView = findViewById(R.id.parallelCountTextView)
 
         // Initialize Asset Pack Manager
@@ -415,16 +416,44 @@ class MainActivity : AppCompatActivity() {
             updateUIForMode()
         }
         
-        // Parallel count seekbar handler
-        parallelCountSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                numParallelProofs = progress + 1 // SeekBar starts at 0, we want 1-50
+        // Plus/minus button handlers
+        minusButton.setOnClickListener {
+            if (numParallelProofs > 1) {
+                numParallelProofs--
                 parallelCountTextView.text = numParallelProofs.toString()
+                updateButtonStates()
             }
-            
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        }
+        
+        plusButton.setOnClickListener {
+            if (numParallelProofs < 50) {
+                numParallelProofs++
+                parallelCountTextView.text = numParallelProofs.toString()
+                updateButtonStates()
+            }
+        }
+        
+        // Initialize button states
+        updateButtonStates()
+    }
+    
+    /**
+     * Updates the enabled/disabled state of plus/minus buttons.
+     */
+    private fun updateButtonStates() {
+        minusButton.isEnabled = numParallelProofs > 1
+        plusButton.isEnabled = numParallelProofs < 50
+        
+        // Update button alpha for visual feedback
+        minusButton.alpha = if (numParallelProofs > 1) 1.0f else 0.3f
+        plusButton.alpha = if (numParallelProofs < 50) 1.0f else 0.3f
+        
+        // Update text color for better visibility
+        val enabledColor = resources.getColor(android.R.color.holo_blue_dark, theme)
+        val disabledColor = resources.getColor(android.R.color.darker_gray, theme)
+        
+        minusButton.setTextColor(if (numParallelProofs > 1) enabledColor else disabledColor)
+        plusButton.setTextColor(if (numParallelProofs < 50) enabledColor else disabledColor)
     }
     
     /**
