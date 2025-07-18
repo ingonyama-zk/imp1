@@ -7,6 +7,7 @@ import com.google.android.play.core.assetpacks.AssetPackManagerFactory
 import com.google.android.play.core.assetpacks.AssetPackState as GoogleAssetPackState
 import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener
 import com.google.android.play.core.assetpacks.model.AssetPackStatus
+import com.ingonyama.imp1_aar_example.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -137,10 +138,10 @@ class AssetPackManager(private val context: Context) {
         val isReady = completedPacks == totalPacks
         
         val statusMessage = when {
-            isReady -> "All asset packs ready ($completedPacks/$totalPacks)"
-            isDownloading -> "Downloading asset packs: $averageProgress% ($completedPacks/$totalPacks ready)"
-            hasFailed -> "Some asset pack downloads failed ($completedPacks/$totalPacks ready)"
-            else -> "Checking asset packs... ($completedPacks/$totalPacks ready)"
+            isReady -> Constants.STATUS_ALL_PACKS_READY.format(completedPacks, totalPacks)
+            isDownloading -> Constants.STATUS_DOWNLOADING_PACKS.format(averageProgress, completedPacks, totalPacks)
+            hasFailed -> Constants.STATUS_DOWNLOADS_FAILED.format(completedPacks, totalPacks)
+            else -> Constants.STATUS_CHECKING_PACKS.format(completedPacks, totalPacks)
         }
         
         return AssetPackState(

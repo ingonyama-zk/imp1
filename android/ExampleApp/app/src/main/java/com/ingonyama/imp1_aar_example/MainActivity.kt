@@ -181,10 +181,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateUIForMode() {
         if (isParallelMode) {
             parallelConfigLayout.visibility = View.VISIBLE
-            runButton.text = "Run Parallel Proofs"
+            runButton.text = Constants.BUTTON_TEXT_PARALLEL_PROOFS
         } else {
             parallelConfigLayout.visibility = View.GONE
-            runButton.text = "Run Single Proof"
+            runButton.text = Constants.BUTTON_TEXT_SINGLE_PROOF
         }
     }
 
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
      * Runs a single proof test.
      */
     private fun runSingleProofTest(example: com.ingonyama.imp1_aar_example.data.Example) {
-        lifecycleScope.launch(Dispatchers.IO + CoroutineName("IMP1 Single Proof")) {
+        lifecycleScope.launch(Dispatchers.IO + CoroutineName(Constants.COROUTINE_NAME_SINGLE_PROOF)) {
             withContext(Dispatchers.Main) {
                 logTextView.text = ""
                 progressBar.visibility = View.VISIBLE
@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
                 val packLocation = assetPackManager.getPackLocation(example.assetPack)
                 if (packLocation == null) {
                     withContext(Dispatchers.Main) {
-                        logTextView.append("❌ Asset pack '${example.assetPack}' not available. Please wait for download to complete.\n")
+                        logTextView.append(Constants.ERROR_ASSET_PACK_NOT_AVAILABLE.format(example.assetPack) + "\n")
                         progressBar.visibility = View.GONE
                         runButton.isEnabled = true
                     }
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    logTextView.append("❌ Error: ${e.message}\n")
+                    logTextView.append(Constants.ERROR_PREFIX + e.message + "\n")
                     progressBar.visibility = View.GONE
                     runButton.isEnabled = true
                 }
@@ -231,7 +231,7 @@ class MainActivity : AppCompatActivity() {
      * Runs parallel proof tests.
      */
     private fun runParallelProofTest(example: com.ingonyama.imp1_aar_example.data.Example) {
-        lifecycleScope.launch(Dispatchers.IO + CoroutineName("IMP1 Parallel Proof")) {
+        lifecycleScope.launch(Dispatchers.IO + CoroutineName(Constants.COROUTINE_NAME_PARALLEL_PROOF)) {
             withContext(Dispatchers.Main) {
                 logTextView.text = ""
                 progressBar.visibility = View.VISIBLE
@@ -242,7 +242,7 @@ class MainActivity : AppCompatActivity() {
                 val packLocation = assetPackManager.getPackLocation(example.assetPack)
                 if (packLocation == null) {
                     withContext(Dispatchers.Main) {
-                        logTextView.append("❌ Asset pack '${example.assetPack}' not available. Please wait for download to complete.\n")
+                        logTextView.append(Constants.ERROR_ASSET_PACK_NOT_AVAILABLE.format(example.assetPack) + "\n")
                         progressBar.visibility = View.GONE
                         runButton.isEnabled = true
                     }
@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
                 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    logTextView.append("❌ Error: ${e.message}\n")
+                    logTextView.append(Constants.ERROR_PREFIX + e.message + "\n")
                     progressBar.visibility = View.GONE
                     runButton.isEnabled = true
                 }

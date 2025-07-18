@@ -4,40 +4,11 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 
-enum class DeviceType(val value: Int) {
-    Cpu(1),
-}
-
-data class ProofResult(val value: Int) {
-    companion object {
-        val ProverSuccess = ProofResult(0)
-        val ProverFailure = ProofResult(1)
-        
-        fun fromInt(value: Int) = when (value) {
-            0 -> ProverSuccess
-            1 -> ProverFailure
-            else -> ProverFailure
-        }
-    }
-}
-
-enum class ProverResult(val value: Int) {
-    ProverSuccess(0),
-    ProverFailure(1);
-
-    companion object {
-        fun fromInt(value: Int) = entries.first { it.value == value }
-    }
-}
-
-enum class VerifierResult(val value: Int) {
-    VerifierSuccess(0),
-    VerifierFailure(1);
-
-    companion object {
-        fun fromInt(value: Int) = entries.first { it.value == value }
-    }
-}
+// Use unified enum system
+typealias DeviceType = Enums.DeviceType
+typealias ProverResult = Enums.ProverResult
+typealias VerifierResult = Enums.VerifierResult
+typealias ProofResult = Enums.ProofResult
 
 class ProverException(message: String) : Exception(message)
 
@@ -71,7 +42,7 @@ object NativeBridge {
             proveNative(witnessPath, zkeyPath, proofPath, publicPath, errorBuffer, deviceType.value)
         )
 
-        if (result == ProverResult.ProverFailure) {
+        if (result == ProverResult.FAILURE) {
             val errorBytes = ByteArray(errorBuffer.position())
             errorBuffer.rewind()
             errorBuffer.get(errorBytes)

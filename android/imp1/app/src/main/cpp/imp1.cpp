@@ -5,7 +5,7 @@
 #include <android/log.h>
 
 enum DeviceType {
-    Cpu = 1,
+    CPU = 1,
 };
 
 struct ProofResult {
@@ -13,13 +13,13 @@ struct ProofResult {
 };
 
 enum ProverResult {
-    ProverSuccess = 0,
-    ProverFailure = 1,
+    PROVER_SUCCESS = 0,
+    PROVER_FAILURE = 1,
 };
 
 enum VerifierResult {
-    VerifierSuccess = 0,
-    VerifierFailure = 1,
+    VERIFIER_SUCCESS = 0,
+    VERIFIER_FAILURE = 1,
 };
 
 extern "C" {
@@ -237,7 +237,7 @@ jint jni_get_prover_result_value(
 ) {
     const ProofResult* results = reinterpret_cast<const ProofResult*>(results_ptr);
     if (results == nullptr) {
-        return static_cast<jint>(1); // ProverFailure
+        return static_cast<jint>(PROVER_FAILURE);
     }
     return static_cast<jint>(results[index].value);
 }

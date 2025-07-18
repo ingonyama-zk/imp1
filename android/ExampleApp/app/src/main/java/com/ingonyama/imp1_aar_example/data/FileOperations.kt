@@ -2,6 +2,7 @@ package com.ingonyama.imp1_aar_example.data
 
 import android.content.Context
 import com.google.android.play.core.assetpacks.AssetPackLocation
+import com.ingonyama.imp1_aar_example.Constants
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -46,7 +47,7 @@ class FileOperations(private val context: Context) {
      */
     suspend fun clearPreviousOutputs(workingDir: File) {
         workingDir.listFiles()?.filter { 
-            it.name.endsWith(".proof") || it.name.endsWith(".public") 
+            it.name.endsWith(Constants.PROOF_FILE_EXTENSION) || it.name.endsWith(Constants.PUBLIC_FILE_EXTENSION) 
         }?.forEach { it.delete() }
     }
     
@@ -55,11 +56,11 @@ class FileOperations(private val context: Context) {
      */
     suspend fun createSingleProofFiles(workingDir: File): SingleProofFiles {
         return SingleProofFiles(
-            witnessFile = File(workingDir, "witness.wtns"),
-            zkeyFile = File(workingDir, "zkey.zkey"),
-            vkFile = File(workingDir, "vk.json"),
-            proofFile = File(workingDir, "test.proof"),
-            publicFile = File(workingDir, "test.public")
+            witnessFile = File(workingDir, Constants.DEFAULT_WITNESS_FILE),
+            zkeyFile = File(workingDir, Constants.DEFAULT_ZKEY_FILE),
+            vkFile = File(workingDir, Constants.DEFAULT_VK_FILE),
+            proofFile = File(workingDir, Constants.DEFAULT_PROOF_FILE),
+            publicFile = File(workingDir, Constants.DEFAULT_PUBLIC_FILE)
         )
     }
     
@@ -67,14 +68,14 @@ class FileOperations(private val context: Context) {
      * Creates working directory files for parallel proof tests.
      */
     suspend fun createParallelProofFiles(workingDir: File, numProofs: Int): ParallelProofFiles {
-        val witnessPaths = Array(numProofs) { i -> File(workingDir, "witness_$i.wtns") }
-        val proofPaths = Array(numProofs) { i -> File(workingDir, "proof_$i.proof") }
-        val publicPaths = Array(numProofs) { i -> File(workingDir, "public_$i.public") }
+        val witnessPaths = Array(numProofs) { i -> File(workingDir, Constants.PARALLEL_WITNESS_PATTERN.format(i)) }
+        val proofPaths = Array(numProofs) { i -> File(workingDir, Constants.PARALLEL_PROOF_PATTERN.format(i)) }
+        val publicPaths = Array(numProofs) { i -> File(workingDir, Constants.PARALLEL_PUBLIC_PATTERN.format(i)) }
         
         return ParallelProofFiles(
-            witnessFile = File(workingDir, "witness.wtns"),
-            zkeyFile = File(workingDir, "zkey.zkey"),
-            vkFile = File(workingDir, "vk.json"),
+            witnessFile = File(workingDir, Constants.DEFAULT_WITNESS_FILE),
+            zkeyFile = File(workingDir, Constants.DEFAULT_ZKEY_FILE),
+            vkFile = File(workingDir, Constants.DEFAULT_VK_FILE),
             witnessPaths = witnessPaths,
             proofPaths = proofPaths,
             publicPaths = publicPaths

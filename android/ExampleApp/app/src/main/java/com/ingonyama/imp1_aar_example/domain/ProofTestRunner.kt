@@ -5,6 +5,7 @@ import com.ingonyama.imp1.NativeBridge
 import com.ingonyama.imp1.ProverException
 import com.ingonyama.imp1.ProofResult
 import com.ingonyama.imp1.VerifierResult
+import com.ingonyama.imp1_aar_example.Constants
 import com.ingonyama.imp1_aar_example.data.Example
 import com.ingonyama.imp1_aar_example.data.FileOperations
 import com.ingonyama.imp1_aar_example.data.SingleProofFiles
@@ -26,7 +27,7 @@ class ProofTestRunner(
         example: Example,
         packLocation: AssetPackLocation
     ): SingleProofResult {
-        logCallback("Starting test for: ${example.name}")
+        logCallback(Constants.LOG_STARTING_TEST.format(example.name))
         
         val workingDir = fileOperations.getCacheDir()
         fileOperations.clearPreviousOutputs(workingDir)
@@ -35,28 +36,28 @@ class ProofTestRunner(
         
         try {
             // Step 1: Copy asset files to the app's private storage
-            logCallback("Copying assets to device storage...")
+            logCallback(Constants.LOG_COPYING_ASSETS)
             fileOperations.copyAssetToFile(example.witnessAsset, files.witnessFile)
             fileOperations.copyZkeyFromAssetPack(packLocation, example.zkeyAsset, files.zkeyFile)
             fileOperations.copyAssetToFile(example.vkAsset, files.vkFile)
-            logCallback("...copying complete.")
+            logCallback(Constants.LOG_COPYING_COMPLETE)
 
             // Step 2: Run the prover
-            logCallback("\nRunning Prover...")
+            logCallback(Constants.LOG_RUNNING_PROVER)
             val proveTime = measureTimeMillis {
-                NativeBridge.prove(
-                    witnessPath = files.witnessFile.absolutePath,
-                    zkeyPath = files.zkeyFile.absolutePath,
-                    proofPath = files.proofFile.absolutePath,
-                    publicPath = files.publicFile.absolutePath,
-                    deviceType = DeviceType.Cpu
-                )
+                            NativeBridge.prove(
+                witnessPath = files.witnessFile.absolutePath,
+                zkeyPath = files.zkeyFile.absolutePath,
+                proofPath = files.proofFile.absolutePath,
+                publicPath = files.publicFile.absolutePath,
+                deviceType = DeviceType.CPU
+            )
             }
-            logCallback("✅ Prove SUCCESSFUL")
-            logCallback("   Time taken: $proveTime ms")
+            logCallback(Constants.LOG_PROVE_SUCCESS)
+            logCallback(Constants.LOG_TIME_TAKEN.format(proveTime))
 
             // Step 3: Run the verifier
-            logCallback("\nRunning Verifier...")
+            logCallback(Constants.LOG_RUNNING_VERIFIER)
             val verifyTime = measureTimeMillis {
                 val result = NativeBridge.verify(
                     proofPath = files.proofFile.absolutePath,
@@ -64,13 +65,13 @@ class ProofTestRunner(
                     vkPath = files.vkFile.absolutePath
                 )
 
-                if (result == VerifierResult.VerifierSuccess) {
-                    logCallback("✅ Verify SUCCESSFUL")
+                if (result == VerifierResult.SUCCESS) {
+                    logCallback(Constants.LOG_VERIFY_SUCCESS)
                 } else {
-                    logCallback("❌ Verify FAILED")
+                    logCallback(Constants.LOG_VERIFY_FAILED)
                 }
             }
-            logCallback("   Time taken: $verifyTime ms")
+            logCallback(Constants.LOG_TIME_TAKEN.format(verifyTime))
             
             return SingleProofResult.Success(
                 proveTime = proveTime,
@@ -79,13 +80,13 @@ class ProofTestRunner(
             )
 
         } catch (e: ProverException) {
-            logCallback("❌ Prove FAILED")
-            logCallback("   Error: ${e.message}")
+            logCallback(Constants.LOG_PROVE_FAILED)
+            logCallback(Constants.LOG_ERROR_DETAILS.format(e.message))
             return SingleProofResult.ProverFailed(e.message ?: "Unknown error")
         } catch (e: IOException) {
-            logCallback("\n❌ CRITICAL ERROR: Could not copy asset files.")
-            logCallback("   Make sure the filenames in the `examples` list are correct.")
-            logCallback("   Error: ${e.message}")
+            logCallback(Constants.LOG_CRITICAL_FILE_ERROR)
+            logCallback(Constants.LOG_FILE_ERROR_INSTRUCTIONS)
+            logCallback(Constants.LOG_ERROR_DETAILS.format(e.message))
             return SingleProofResult.FileError(e.message ?: "Unknown error")
         }
     }
@@ -98,8 +99,8 @@ class ProofTestRunner(
         packLocation: AssetPackLocation,
         numParallelProofs: Int
     ): ParallelProofResult {
-        logCallback("Starting parallel proof test for: ${example.name}")
-        logCallback("Number of parallel proofs: $numParallelProofs")
+        logCallback(Constants.LOG_STARTING_PARALLEL_TEST.format(example.name))
+        logCallback(Constants.LOG_NUM_PARALLEL_PROOFS.format(numParallelProofs))
         
         val workingDir = fileOperations.getCacheDir()
         fileOperations.clearPreviousOutputs(workingDir)
@@ -108,17 +109,17 @@ class ProofTestRunner(
         
         try {
             // Step 1: Copy asset files to the app's private storage
-            logCallback("Copying assets to device storage...")
+            logCallback(Constants.LOG_COPYING_ASSETS)
             fileOperations.copyAssetToFile(example.witnessAsset, files.witnessFile)
             fileOperations.copyZkeyFromAssetPack(packLocation, example.zkeyAsset, files.zkeyFile)
             fileOperations.copyAssetToFile(example.vkAsset, files.vkFile)
             
             // Copy witness file multiple times for parallel processing
             fileOperations.copyWitnessForParallelProcessing(files.witnessFile, files.witnessPaths)
-            logCallback("...copying complete.")
+            logCallback(Constants.LOG_COPYING_COMPLETE)
 
             // Step 2: Run the parallel prover
-            logCallback("\nRunning Parallel Prover...")
+            logCallback(Constants.LOG_RUNNING_PARALLEL_PROVER)
             val proveTime = measureTimeMillis {
                 // Create the arrays for JNI
                 val witnessPathsArray = files.witnessPaths.map { it.absolutePath }.toTypedArray()
@@ -130,7 +131,7 @@ class ProofTestRunner(
                     zkeyPath = files.zkeyFile.absolutePath,
                     proofPaths = proofPathsArray,
                     publicPaths = publicPathsArray,
-                    deviceType = DeviceType.Cpu,
+                    deviceType = DeviceType.CPU,
                     maxBatchSize = 0L
                 )
                 
@@ -138,28 +139,28 @@ class ProofTestRunner(
                 val proofResults = mutableListOf<String>()
                 for ((index, result) in results.withIndex()) {
                     when (result.value) {
-                        0 -> {
-                            proofResults.add("✅ Proof ${index + 1}: Success")
-                            logCallback("✅ Proof ${index + 1}: Success")
+                        Constants.JNI_SUCCESS -> {
+                            proofResults.add(Constants.LOG_PROOF_SUCCESS.format(index + 1))
+                            logCallback(Constants.LOG_PROOF_SUCCESS.format(index + 1))
                         }
-                        1 -> {
-                            proofResults.add("❌ Proof ${index + 1}: Failed")
-                            logCallback("❌ Proof ${index + 1}: Failed")
+                        Constants.JNI_FAILURE -> {
+                            proofResults.add(Constants.LOG_PROOF_FAILED.format(index + 1))
+                            logCallback(Constants.LOG_PROOF_FAILED.format(index + 1))
                         }
                         else -> {
-                            proofResults.add("❓ Proof ${index + 1}: Unknown result")
-                            logCallback("❓ Proof ${index + 1}: Unknown result")
+                            proofResults.add(Constants.LOG_PROOF_UNKNOWN.format(index + 1))
+                            logCallback(Constants.LOG_PROOF_UNKNOWN.format(index + 1))
                         }
                     }
                 }
             }
-            logCallback("✅ Parallel Prove completed")
-            logCallback("   Time taken: $proveTime ms")
+            logCallback(Constants.LOG_PARALLEL_PROVE_COMPLETED)
+            logCallback(Constants.LOG_TIME_TAKEN.format(proveTime))
             val proofRuntime = formatTimeInterval(proveTime.toDouble())
-            logCallback("   Runtime: $proofRuntime")
+            logCallback(Constants.LOG_RUNTIME.format(proofRuntime))
 
             // Step 3: Run the verifier for each proof
-            logCallback("\nRunning Verifier for all proofs...")
+            logCallback(Constants.LOG_RUNNING_VERIFIER_ALL)
             val verifyTime = measureTimeMillis {
                 val verificationResults = mutableListOf<String>()
                 for (i in 0 until numParallelProofs) {
@@ -173,21 +174,21 @@ class ProofTestRunner(
                     )
 
                     when (result) {
-                        VerifierResult.VerifierSuccess -> {
-                            verificationResults.add("✅ Proof ${i + 1}: Verified")
-                            logCallback("✅ Proof ${i + 1}: Verified")
+                        VerifierResult.SUCCESS -> {
+                            verificationResults.add(Constants.LOG_PROOF_VERIFIED.format(i + 1))
+                            logCallback(Constants.LOG_PROOF_VERIFIED.format(i + 1))
                         }
-                        VerifierResult.VerifierFailure -> {
-                            verificationResults.add("❌ Proof ${i + 1}: Verification Failed")
-                            logCallback("❌ Proof ${i + 1}: Verification Failed")
+                        VerifierResult.FAILURE -> {
+                            verificationResults.add(Constants.LOG_PROOF_VERIFICATION_FAILED.format(i + 1))
+                            logCallback(Constants.LOG_PROOF_VERIFICATION_FAILED.format(i + 1))
                         }
                     }
                 }
             }
-            logCallback("✅ Verification completed")
-            logCallback("   Time taken: $verifyTime ms")
+            logCallback(Constants.LOG_VERIFICATION_COMPLETED)
+            logCallback(Constants.LOG_TIME_TAKEN.format(verifyTime))
             val verificationRuntime = formatTimeInterval(verifyTime.toDouble())
-            logCallback("   Runtime: $verificationRuntime")
+            logCallback(Constants.LOG_RUNTIME.format(verificationRuntime))
             
             return ParallelProofResult.Success(
                 proveTime = proveTime,
@@ -196,13 +197,13 @@ class ProofTestRunner(
             )
 
         } catch (e: ProverException) {
-            logCallback("❌ Parallel Prove FAILED")
-            logCallback("   Error: ${e.message}")
+            logCallback(Constants.LOG_PARALLEL_PROVE_FAILED)
+            logCallback(Constants.LOG_ERROR_DETAILS.format(e.message))
             return ParallelProofResult.ProverFailed(e.message ?: "Unknown error")
         } catch (e: IOException) {
-            logCallback("\n❌ CRITICAL ERROR: Could not copy asset files.")
-            logCallback("   Make sure the filenames in the `examples` list are correct.")
-            logCallback("   Error: ${e.message}")
+            logCallback(Constants.LOG_CRITICAL_FILE_ERROR)
+            logCallback(Constants.LOG_FILE_ERROR_INSTRUCTIONS)
+            logCallback(Constants.LOG_ERROR_DETAILS.format(e.message))
             return ParallelProofResult.FileError(e.message ?: "Unknown error")
         }
     }
@@ -212,12 +213,12 @@ class ProofTestRunner(
      */
     private fun formatTimeInterval(timeMs: Double): String {
         return when {
-            timeMs < 1000 -> "${String.format("%.1f", timeMs)} ms"
-            timeMs < 60000 -> "${String.format("%.2f", timeMs / 1000)} seconds"
+            timeMs < Constants.TIME_MS_THRESHOLD -> String.format(Constants.TIME_FORMAT_MS, timeMs)
+            timeMs < Constants.TIME_SECONDS_THRESHOLD -> String.format(Constants.TIME_FORMAT_SECONDS, timeMs / Constants.MS_PER_SECOND)
             else -> {
-                val minutes = (timeMs / 60000).toInt()
-                val seconds = (timeMs % 60000) / 1000
-                "$minutes minutes ${String.format("%.2f", seconds)} seconds"
+                val minutes = (timeMs / Constants.MS_PER_MINUTE).toInt()
+                val seconds = (timeMs % Constants.MS_PER_MINUTE) / Constants.MS_PER_SECOND
+                String.format(Constants.TIME_FORMAT_MINUTES_SECONDS, minutes, seconds)
             }
         }
     }
