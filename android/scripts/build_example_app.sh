@@ -35,6 +35,29 @@ find_java_21_plus() {
             if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
                 echo "$JAVA_HOME"
                 return 0
+            else
+                # Try to find Java home from the java executable
+                local java_path=$(which java)
+                if [[ "$java_path" == /usr/bin/java ]]; then
+                    # On macOS, this is likely a symlink to the actual Java installation
+                    local real_java_path=$(readlink -f "$java_path" 2>/dev/null || echo "$java_path")
+                    if [[ "$real_java_path" != "$java_path" ]]; then
+                        local java_home=$(dirname "$(dirname "$real_java_path")")
+                        if [ -d "$java_home" ] && [ -f "$java_home/bin/java" ]; then
+                            echo "$java_home"
+                            return 0
+                        fi
+                    fi
+                fi
+                
+                # Try to find Java home using /usr/libexec/java_home on macOS
+                if command -v /usr/libexec/java_home &> /dev/null; then
+                    local java_home=$(/usr/libexec/java_home -v "$java_version" 2>/dev/null)
+                    if [ -n "$java_home" ] && [ -d "$java_home" ]; then
+                        echo "$java_home"
+                        return 0
+                    fi
+                fi
             fi
         fi
     fi
@@ -63,6 +86,7 @@ java -version
 
 # Get the script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "SCRIPT_DIR: $SCRIPT_DIR"
 
 # --- Argument Parsing ---
 ARR_VERSION="0.2.1"

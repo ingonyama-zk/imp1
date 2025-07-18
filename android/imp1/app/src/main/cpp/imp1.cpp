@@ -162,30 +162,24 @@ jlong jni_parallel_prove(
     public_ptrs.reserve(num_proofs);
     
     // Process witness paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "Processing witness_paths array...");
     for (int i = 0; i < num_proofs; i++) {
         jstring witness_str = static_cast<jstring>(env->GetObjectArrayElement(witness_paths, i));
         const char* witness_cstr = env->GetStringUTFChars(witness_str, nullptr);
         witness_ptrs.push_back(witness_cstr);
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  witness_paths[%d]: %s", i, witness_cstr);
     }
     
     // Process proof paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "Processing proof_paths array...");
     for (int i = 0; i < num_proofs; i++) {
         jstring proof_str = static_cast<jstring>(env->GetObjectArrayElement(proof_paths, i));
         const char* proof_cstr = env->GetStringUTFChars(proof_str, nullptr);
         proof_ptrs.push_back(proof_cstr);
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  proof_paths[%d]: %s", i, proof_cstr);
     }
     
     // Process public paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "Processing public_paths array...");
     for (int i = 0; i < num_proofs; i++) {
         jstring public_str = static_cast<jstring>(env->GetObjectArrayElement(public_paths, i));
         const char* public_cstr = env->GetStringUTFChars(public_str, nullptr);
         public_ptrs.push_back(public_cstr);
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  public_paths[%d]: %s", i, public_cstr);
     }
     
     // Get zkey path
@@ -204,37 +198,7 @@ jlong jni_parallel_prove(
         error_buf[0] = '\0';
     }
     
-    // Add comprehensive logging before calling parallel_prove
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "About to call parallel_prove with:");
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  num_proofs: %d", num_proofs);
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  device_type: %d", device_type);
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  max_batch_size: %lld", max_batch_size);
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  zkey_path: %s", zkey.get() ? zkey.get() : "NULL");
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  error_buf: %p", error_buf);
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  error_buf_size: %lld", error_buf_size);
-    
-    // Log witness paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  witness_ptrs.data(): %p", witness_ptrs.data());
-    for (int i = 0; i < num_proofs; i++) {
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "    witness_ptrs[%d]: %p -> %s", 
-                           i, &witness_ptrs[i], witness_ptrs[i] ? witness_ptrs[i] : "NULL");
-    }
-    
-    // Log proof paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  proof_ptrs.data(): %p", proof_ptrs.data());
-    for (int i = 0; i < num_proofs; i++) {
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "    proof_ptrs[%d]: %p -> %s", 
-                           i, &proof_ptrs[i], proof_ptrs[i] ? proof_ptrs[i] : "NULL");
-    }
-    
-    // Log public paths
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "  public_ptrs.data(): %p", public_ptrs.data());
-    for (int i = 0; i < num_proofs; i++) {
-        __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "    public_ptrs[%d]: %p -> %s", 
-                           i, &public_ptrs[i], public_ptrs[i] ? public_ptrs[i] : "NULL");
-    }
-    
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "Calling parallel_prove...");
+
     
     // Call the parallel_prove function
     const ProofResult* results = parallel_prove(
@@ -248,8 +212,6 @@ jlong jni_parallel_prove(
             static_cast<DeviceType>(device_type),
             static_cast<unsigned long long>(max_batch_size)
     );
-    
-    __android_log_print(ANDROID_LOG_DEBUG, "IMP1_JNI", "parallel_prove returned: %p", results);
     
     // Clean up JNI string references
     for (int i = 0; i < num_proofs; i++) {

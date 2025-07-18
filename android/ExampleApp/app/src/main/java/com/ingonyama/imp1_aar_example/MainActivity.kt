@@ -453,29 +453,10 @@ class MainActivity : AppCompatActivity() {
                 log("Starting parallel proof test for: ${example.name}")
                 log("Number of parallel proofs: $numParallelProofs")
             }
-            
-            Log.d("IMP1_DEBUG", "Entered runParallelProofTest function")
-            Log.d("IMP1_DEBUG", "Example name: ${example.name}")
-            Log.d("IMP1_DEBUG", "Example witness asset: ${example.witnessAsset}")
-            Log.d("IMP1_DEBUG", "Example zkey asset: ${example.zkeyAsset}")
-            Log.d("IMP1_DEBUG", "Example vk asset: ${example.vkAsset}")
-            Log.d("IMP1_DEBUG", "Example asset pack: ${example.assetPack}")
-            
-            log("DEBUG: Entered runParallelProofTest function")
-            log("DEBUG: Example name: ${example.name}")
-            log("DEBUG: Example witness asset: ${example.witnessAsset}")
-            log("DEBUG: Example zkey asset: ${example.zkeyAsset}")
-            log("DEBUG: Example vk asset: ${example.vkAsset}")
-            log("DEBUG: Example asset pack: ${example.assetPack}")
 
             // Check if the required asset pack is available
-            Log.d("IMP1_DEBUG", "Checking asset pack availability...")
-            log("DEBUG: Checking asset pack availability...")
             val packLocation = assetPackManager.getPackLocation(example.assetPack)
-            Log.d("IMP1_DEBUG", "Pack location: $packLocation")
-            log("DEBUG: Pack location: $packLocation")
             if (packLocation == null) {
-                Log.d("IMP1_DEBUG", "Asset pack not available: ${example.assetPack}")
                 log("❌ Asset pack '${example.assetPack}' not available. Please wait for download to complete.")
                 withContext(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
@@ -483,8 +464,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 return@launch
             }
-            Log.d("IMP1_DEBUG", "Asset pack is available")
-            log("DEBUG: Asset pack is available")
 
             // The cache directory is a good place for temporary files.
             val workingDir = cacheDir
@@ -503,14 +482,9 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 // Step 1: Copy asset files to the app's private storage
-                Log.d("IMP1_DEBUG", "Starting to copy assets...")
                 log("Copying assets to device storage...")
-                Log.d("IMP1_DEBUG", "Copying witness file: ${example.witnessAsset}")
                 copyAssetToFile(example.witnessAsset, witnessFile)
-                Log.d("IMP1_DEBUG", "Copying zkey file: ${example.zkeyAsset}")
                 copyZkeyFromAssetPack(packLocation, example.zkeyAsset, zkeyFile)
-                Log.d("IMP1_DEBUG", "ZKey file copied. Exists: ${zkeyFile.exists()}, Size: ${zkeyFile.length()} bytes")
-                Log.d("IMP1_DEBUG", "Copying vk file: ${example.vkAsset}")
                 copyAssetToFile(example.vkAsset, vkFile)
                 
                 // Copy witness file multiple times for parallel processing
@@ -518,47 +492,14 @@ class MainActivity : AppCompatActivity() {
                     witnessFile.copyTo(witnessPaths[i], overwrite = true)
                 }
                 log("...copying complete.")
-                
-                // Debug: Check if files exist
-                log("Debug: Checking file existence...")
-                log("  Witness file exists: ${witnessFile.exists()}")
-                log("  ZKey file exists: ${zkeyFile.exists()}")
-                log("  VK file exists: ${vkFile.exists()}")
-                log("  VK file path: ${vkFile.absolutePath}")
-                log("  VK file size: ${vkFile.length()} bytes")
 
                 // Step 2: Run the parallel prover
-                Log.d("IMP1_DEBUG", "About to start parallel prove...")
                 log("\nRunning Parallel Prover...")
-                Log.d("IMP1_DEBUG", "About to call NativeBridge.parallelProve")
-                log("DEBUG: About to call NativeBridge.parallelProve")
-                Log.d("IMP1_DEBUG", "Witness paths count: ${witnessPaths.size}")
-                log("DEBUG: Witness paths count: ${witnessPaths.size}")
-                Log.d("IMP1_DEBUG", "Proof paths count: ${proofPaths.size}")
-                log("DEBUG: Proof paths count: ${proofPaths.size}")
-                Log.d("IMP1_DEBUG", "Public paths count: ${publicPaths.size}")
-                log("DEBUG: Public paths count: ${publicPaths.size}")
-                Log.d("IMP1_DEBUG", "ZKey path: ${zkeyFile.absolutePath}")
-                log("DEBUG: ZKey path: ${zkeyFile.absolutePath}")
                 try {
-                                    Log.d("IMP1_DEBUG", "Calling NativeBridge.parallelProve...")
-                Log.d("IMP1_DEBUG", "Witness paths: ${witnessPaths.map { it.absolutePath }}")
-                Log.d("IMP1_DEBUG", "Proof paths: ${proofPaths.map { it.absolutePath }}")
-                Log.d("IMP1_DEBUG", "Public paths: ${publicPaths.map { it.absolutePath }}")
-                Log.d("IMP1_DEBUG", "ZKey path: ${zkeyFile.absolutePath}")
-                
                 // Create the arrays for JNI
                 val witnessPathsArray = witnessPaths.map { it.absolutePath }.toTypedArray()
                 val proofPathsArray = proofPaths.map { it.absolutePath }.toTypedArray()
                 val publicPathsArray = publicPaths.map { it.absolutePath }.toTypedArray()
-                
-                // Debug: Check array contents before JNI call
-                Log.d("IMP1_DEBUG", "JNI Arrays before call:")
-                for (i in 0 until witnessPathsArray.size) {
-                    Log.d("IMP1_DEBUG", "  witnessPathsArray[$i]: ${witnessPathsArray[i]}")
-                    Log.d("IMP1_DEBUG", "  proofPathsArray[$i]: ${proofPathsArray[i]}")
-                    Log.d("IMP1_DEBUG", "  publicPathsArray[$i]: ${publicPathsArray[i]}")
-                }
                 
                 val proveTime = measureTimeMillis {
                     val results = NativeBridge.parallelProve(
@@ -612,15 +553,6 @@ class MainActivity : AppCompatActivity() {
                     for (i in 0 until numParallelProofs) {
                         val proofPath = proofPaths[i]
                         val publicPath = publicPaths[i]
-                        
-                        // Debug: Check files before verification
-                        log("Debug: Verifying proof ${i + 1}...")
-                        log("  Proof file exists: ${proofPath.exists()}")
-                        log("  Public file exists: ${publicPath.exists()}")
-                        log("  VK file exists: ${vkFile.exists()}")
-                        log("  Proof path: ${proofPath.absolutePath}")
-                        log("  Public path: ${publicPath.absolutePath}")
-                        log("  VK path: ${vkFile.absolutePath}")
                         
                         val result = NativeBridge.verify(
                             proofPath = proofPath.absolutePath,
