@@ -23,14 +23,18 @@ class ParallelProofManager(
     ) {
         minusButton.setOnClickListener {
             if (numParallelProofs > Constants.MIN_PARALLEL_PROOFS) {
-                decrementParallelProofs()
+                numParallelProofs--
+                parallelCountTextView.text = numParallelProofs.toString()
+                updateButtonStates()
                 onCountChanged(numParallelProofs)
             }
         }
         
         plusButton.setOnClickListener {
             if (numParallelProofs < Constants.MAX_PARALLEL_PROOFS) {
-                incrementParallelProofs()
+                numParallelProofs++
+                parallelCountTextView.text = numParallelProofs.toString()
+                updateButtonStates()
                 onCountChanged(numParallelProofs)
             }
         }
@@ -62,35 +66,4 @@ class ParallelProofManager(
      * Gets the current number of parallel proofs.
      */
     fun getNumParallelProofs(): Int = numParallelProofs
-    
-    /**
-     * Sets the number of parallel proofs.
-     */
-    fun setNumParallelProofs(count: Int) {
-        numParallelProofs = count.coerceIn(Constants.MIN_PARALLEL_PROOFS, Constants.MAX_PARALLEL_PROOFS)
-        parallelCountTextView.text = numParallelProofs.toString()
-        updateButtonStates()
-    }
-    
-    /**
-     * Increments the number of parallel proofs.
-     */
-    private fun incrementParallelProofs() {
-        if (numParallelProofs < Constants.MAX_PARALLEL_PROOFS) {
-            numParallelProofs++
-            parallelCountTextView.text = numParallelProofs.toString()
-            updateButtonStates()
-        }
-    }
-    
-    /**
-     * Decrements the number of parallel proofs.
-     */
-    private fun decrementParallelProofs() {
-        if (numParallelProofs > Constants.MIN_PARALLEL_PROOFS) {
-            numParallelProofs--
-            parallelCountTextView.text = numParallelProofs.toString()
-            updateButtonStates()
-        }
-    }
 } 
