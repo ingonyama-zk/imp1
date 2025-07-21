@@ -23,14 +23,14 @@ class ParallelProofManager(
     ) {
         minusButton.setOnClickListener {
             if (numParallelProofs > Constants.MIN_PARALLEL_PROOFS) {
-                setNumParallelProofs(numParallelProofs - 1)
+                decrementParallelProofs()
                 onCountChanged(numParallelProofs)
             }
         }
         
         plusButton.setOnClickListener {
             if (numParallelProofs < Constants.MAX_PARALLEL_PROOFS) {
-                setNumParallelProofs(numParallelProofs + 1)
+                incrementParallelProofs()
                 onCountChanged(numParallelProofs)
             }
         }
@@ -70,5 +70,27 @@ class ParallelProofManager(
         numParallelProofs = count.coerceIn(Constants.MIN_PARALLEL_PROOFS, Constants.MAX_PARALLEL_PROOFS)
         parallelCountTextView.text = numParallelProofs.toString()
         updateButtonStates()
+    }
+    
+    /**
+     * Increments the number of parallel proofs.
+     */
+    private fun incrementParallelProofs() {
+        if (numParallelProofs < Constants.MAX_PARALLEL_PROOFS) {
+            numParallelProofs++
+            parallelCountTextView.text = numParallelProofs.toString()
+            updateButtonStates()
+        }
+    }
+    
+    /**
+     * Decrements the number of parallel proofs.
+     */
+    private fun decrementParallelProofs() {
+        if (numParallelProofs > Constants.MIN_PARALLEL_PROOFS) {
+            numParallelProofs--
+            parallelCountTextView.text = numParallelProofs.toString()
+            updateButtonStates()
+        }
     }
 } 

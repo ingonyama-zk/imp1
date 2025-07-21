@@ -130,7 +130,7 @@ build_for_target() {
     # cargo clean
 
     if [ "$DEBUG" = true ]; then
-        CARGO_PROFILE_RELEASE_DEBUG=true RUSTFLAGS="-C link-arg=-llog" cargo build --target "$target_triple" --release --features debug --verbose
+        CARGO_PROFILE_RELEASE_DEBUG=true cargo build --target "$target_triple" --features android --release --verbose
     else
         cargo build --target "$target_triple" --release --verbose
     fi 
