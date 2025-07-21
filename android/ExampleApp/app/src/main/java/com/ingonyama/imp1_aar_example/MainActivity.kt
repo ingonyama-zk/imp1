@@ -4,60 +4,29 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.play.core.assetpacks.AssetPackLocation
-import com.google.android.play.core.assetpacks.AssetPackManager
-import com.google.android.play.core.assetpacks.AssetPackManagerFactory
-import com.google.android.play.core.assetpacks.AssetPackState
-import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener
-import com.google.android.play.core.assetpacks.model.AssetPackStatus
-import com.ingonyama.imp1.DeviceType
-import com.ingonyama.imp1.NativeBridge
-import com.ingonyama.imp1.ProverException
-import com.ingonyama.imp1.VerifierResult
+import com.ingonyama.imp1_aar_example.data.AssetPackManager
+import com.ingonyama.imp1_aar_example.data.Examples
+import com.ingonyama.imp1_aar_example.data.FileOperations
+import com.ingonyama.imp1_aar_example.domain.ProofTestRunner
+import com.ingonyama.imp1_aar_example.ui.ParallelProofManager
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
 
-    // Define a data class to hold the filenames for each test case.
-    // The name will be displayed in the Spinner.
-    data class Example(
-        val name: String,
-        val witnessAsset: String,
-        val zkeyAsset: String,
-        val vkAsset: String,
-        val assetPack: String  // Which asset pack contains the zkey
-    ) {
-        // This makes the spinner show the 'name' property
-        override fun toString(): String = name
-    }
-
-    // List of examples with their corresponding asset packs.
-    private val examples = listOf(
-        Example("100k", "100k_witness.wtns", "100k_circuit_final.zkey", "100k_verification_key.json", "zkey_pack_0"),
-        Example("200k", "200k_witness.wtns", "200k_circuit_final.zkey", "200k_verification_key.json", "zkey_pack_0"),
-        Example("400k", "400k_witness.wtns", "400k_circuit_final.zkey", "400k_verification_key.json", "zkey_pack_0"),
-        Example("800k", "800k_witness.wtns", "800k_circuit_final.zkey", "800k_verification_key.json", "zkey_pack_1"),
-        Example("1600k", "1600k_witness.wtns", "1600k_circuit_final.zkey", "1600k_verification_key.json", "zkey_pack_1"),
-        Example("Sha256", "sha256_witness.wtns", "sha256_circuit_final.zkey", "sha256_verification_key.json", "zkey_pack_1"),
-        Example("Rarimo", "rarimo_witness.wtns", "rarimo_circuit_final.zkey", "rarimo_verification_key.json", "zkey_pack_rarimo"),
-        Example("Keccak", "keccak_witness.wtns", "keccak_circuit_final.zkey", "keccak_verification_key.json", "zkey_pack_1"),
-        Example("aes-128", "aes_128_ctr_witness.wtns", "aes_128_ctr_circuit_final.zkey", "aes_128_ctr_verification_key.json", "zkey_pack_zkp2p"),
-        Example("aes-256", "aes_256_ctr_witness.wtns", "aes_256_ctr_circuit_final.zkey", "aes_256_ctr_verification_key.json", "zkey_pack_zkp2p"),
-        Example("chacha20", "chacha20_witness.wtns", "chacha20_circuit_final.zkey", "chacha20_verification_key.json", "zkey_pack_zkp2p"),
-    )
+    // Use the examples from the data layer
+    private val examples = Examples.list
 
     private lateinit var exampleSpinner: Spinner
     private lateinit var runButton: Button
@@ -66,36 +35,42 @@ class MainActivity : AppCompatActivity() {
     private lateinit var downloadProgressBar: ProgressBar
     private lateinit var downloadStatusTextView: TextView
     
+    // Parallel proof UI components
+    private lateinit var modeRadioGroup: RadioGroup
+    private lateinit var singleModeRadio: RadioButton
+    private lateinit var parallelModeRadio: RadioButton
+    private lateinit var parallelConfigLayout: LinearLayout
+    private lateinit var minusButton: TextView
+    private lateinit var plusButton: TextView
+    private lateinit var parallelCountTextView: TextView
+    
+    // Managers
     private lateinit var assetPackManager: AssetPackManager
-    private val assetPackNames = BuildConfig.ASSET_PACK_NAMES.toList()
-    private val packDownloadProgress = mutableMapOf<String, Int>()
-    private val packDownloadStatus = mutableMapOf<String, Int>()
+    private lateinit var fileOperations: FileOperations
+    private lateinit var proofTestRunner: ProofTestRunner
+    private lateinit var parallelProofManager: ParallelProofManager
+    
+    // State
+    private var isParallelMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // Initialize UI components
-        exampleSpinner = findViewById(R.id.exampleSpinner)
-        runButton = findViewById(R.id.runButton)
-        logTextView = findViewById(R.id.logTextView)
-        progressBar = findViewById(R.id.progressBar)
-        downloadProgressBar = findViewById(R.id.downloadProgressBar)
-        downloadStatusTextView = findViewById(R.id.downloadStatusTextView)
-
-        // Initialize Asset Pack Manager
-        assetPackManager = AssetPackManagerFactory.getInstance(this)
-
+        initializeUIComponents()
+        
+        // Initialize managers
+        initializeManagers()
+        
         // Setup the spinner with the list of examples
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, examples)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        exampleSpinner.adapter = adapter
-
+        setupSpinner()
+        
+        // Set up parallel proof UI event handlers
+        setupParallelProofUI()
+        
         // Set the click listener for the run button
-        runButton.setOnClickListener {
-            val selectedExample = exampleSpinner.selectedItem as Example
-            runFullTest(selectedExample)
-        }
+        setupRunButton()
         
         // Initially disable the run button until asset packs are ready
         runButton.isEnabled = false
@@ -105,230 +80,146 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Initializes UI components.
+     */
+    private fun initializeUIComponents() {
+        exampleSpinner = findViewById(R.id.exampleSpinner)
+        runButton = findViewById(R.id.runButton)
+        logTextView = findViewById(R.id.logTextView)
+        progressBar = findViewById(R.id.progressBar)
+        downloadProgressBar = findViewById(R.id.downloadProgressBar)
+        downloadStatusTextView = findViewById(R.id.downloadStatusTextView)
+        
+        // Initialize parallel proof UI components
+        modeRadioGroup = findViewById(R.id.modeRadioGroup)
+        singleModeRadio = findViewById(R.id.singleModeRadio)
+        parallelModeRadio = findViewById(R.id.parallelModeRadio)
+        parallelConfigLayout = findViewById(R.id.parallelConfigLayout)
+        minusButton = findViewById(R.id.minusButton)
+        plusButton = findViewById(R.id.plusButton)
+        parallelCountTextView = findViewById(R.id.parallelCountTextView)
+    }
+    
+    /**
+     * Initializes managers.
+     */
+    private fun initializeManagers() {
+        assetPackManager = AssetPackManager(this)
+        fileOperations = FileOperations(this)
+        proofTestRunner = ProofTestRunner(fileOperations) { message ->
+            lifecycleScope.launch(Dispatchers.Main) {
+                logTextView.append("$message\n")
+            }
+        }
+        parallelProofManager = ParallelProofManager(minusButton, plusButton, parallelCountTextView)
+    }
+    
+    /**
+     * Sets up the spinner with examples.
+     */
+    private fun setupSpinner() {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, examples)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        exampleSpinner.adapter = adapter
+    }
+    
+    /**
+     * Sets up the run button click listener.
+     */
+    private fun setupRunButton() {
+        runButton.setOnClickListener {
+            val selectedExample = exampleSpinner.selectedItem as com.ingonyama.imp1_aar_example.data.Example
+            if (isParallelMode) {
+                runParallelProofTest(selectedExample)
+            } else {
+                runSingleProofTest(selectedExample)
+            }
+        }
+    }
+    
+    /**
      * Checks the status of all zkey asset packs and initiates downloads if needed.
      */
     private fun checkAssetPacksStatus() {
-        val packsToDownload = mutableListOf<String>()
-        
-        for (packName in assetPackNames) {
-            val packLocation = assetPackManager.getPackLocation(packName)
-            if (packLocation == null) {
-                // Pack is not available, needs to be downloaded
-                packsToDownload.add(packName)
-                packDownloadStatus[packName] = AssetPackStatus.NOT_INSTALLED
-            } else {
-                // Pack is available
-                packDownloadStatus[packName] = AssetPackStatus.COMPLETED
-                packDownloadProgress[packName] = 100
+        lifecycleScope.launch {
+            assetPackManager.checkAssetPacksStatus().collectLatest { state ->
+                updateDownloadStatus(state)
             }
         }
+    }
+    
+    /**
+     * Updates the download status UI based on asset pack state.
+     */
+    private fun updateDownloadStatus(state: AssetPackManager.AssetPackState) {
+        downloadStatusTextView.text = state.statusMessage
+        downloadProgressBar.progress = state.averageProgress
         
-        // Always register the listener to handle updates
-        registerDownloadListener()
+        // Enable the run button if all packs are ready
+        runButton.isEnabled = state.isReady
+    }
+
+    /**
+     * Sets up the parallel proof UI event handlers.
+     */
+    private fun setupParallelProofUI() {
+        // Mode toggle handler
+        modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            isParallelMode = checkedId == R.id.parallelModeRadio
+            updateUIForMode()
+        }
         
-        if (packsToDownload.isNotEmpty()) {
-            downloadAssetPacks(packsToDownload)
+        // Set up parallel proof manager
+        parallelProofManager.setupButtonHandlers { count ->
+            // Handle count changes if needed
+        }
+    }
+    
+    /**
+     * Updates the UI based on the selected mode.
+     */
+    private fun updateUIForMode() {
+        if (isParallelMode) {
+            parallelConfigLayout.visibility = View.VISIBLE
+            runButton.text = getString(R.string.button_text_parallel_proofs)
         } else {
-            // All packs are already available, just update the UI
-            updateOverallDownloadStatus()
+            parallelConfigLayout.visibility = View.GONE
+            runButton.text = getString(R.string.button_text_single_proof)
         }
     }
 
     /**
-     * Registers the download progress listener.
+     * Runs a single proof test.
      */
-    private fun registerDownloadListener() {
-        lateinit var listener: AssetPackStateUpdateListener
-        
-        listener = AssetPackStateUpdateListener { state ->
-            val packName = state.name()
-            if (packName in assetPackNames) {
-                packDownloadStatus[packName] = state.status()
-                updatePackProgress(state)
-                
-                when (state.status()) {
-                    AssetPackStatus.COMPLETED -> {
-                        packDownloadProgress[packName] = 100
-                        runOnUiThread { updateOverallDownloadStatus() }
-                        
-                        // Check if all packs are completed
-                        if (packDownloadStatus.values.all { it == AssetPackStatus.COMPLETED }) {
-                            assetPackManager.unregisterListener(listener)
-                        }
-                    }
-                    AssetPackStatus.FAILED -> {
-                        runOnUiThread { updateOverallDownloadStatus() }
-                        assetPackManager.unregisterListener(listener)
-                    }
-                    AssetPackStatus.CANCELED -> {
-                        runOnUiThread { updateOverallDownloadStatus() }
-                        assetPackManager.unregisterListener(listener)
-                    }
-                    else -> {
-                        runOnUiThread { updateOverallDownloadStatus() }
-                    }
-                }
-            }
-        }
-        
-        assetPackManager.registerListener(listener)
-    }
-
-    /**
-     * Downloads the specified asset packs.
-     */
-    private fun downloadAssetPacks(packNames: List<String>) {
-        val request = assetPackManager.fetch(packNames)
-        
-        request.addOnSuccessListener {
-            downloadStatusTextView.text = "Asset pack downloads started"
-        }.addOnFailureListener { exception ->
-            downloadStatusTextView.text = "Failed to start downloads: ${exception.message}"
-        }
-    }
-
-    /**
-     * Updates the progress for a specific pack.
-     */
-    private fun updatePackProgress(state: AssetPackState) {
-        val progress = if (state.totalBytesToDownload() > 0) {
-            ((100.0 * state.bytesDownloaded()) / state.totalBytesToDownload()).toInt()
-        } else {
-            0
-        }
-        packDownloadProgress[state.name()] = progress
-    }
-
-    /**
-     * Updates the overall download status UI.
-     */
-    private fun updateOverallDownloadStatus() {
-        val completedPacks = packDownloadStatus.values.count { it == AssetPackStatus.COMPLETED }
-        val totalPacks = assetPackNames.size
-        
-        when {
-            completedPacks == totalPacks -> {
-                downloadStatusTextView.text = "All asset packs ready ($completedPacks/$totalPacks)"
-                downloadProgressBar.visibility = View.GONE
-                runButton.isEnabled = true
-            }
-            packDownloadStatus.values.any { it == AssetPackStatus.DOWNLOADING } -> {
-                val avgProgress = packDownloadProgress.values.average().toInt()
-                downloadProgressBar.progress = avgProgress
-                downloadProgressBar.visibility = View.VISIBLE
-                downloadStatusTextView.text = "Downloading asset packs: $avgProgress% ($completedPacks/$totalPacks ready)"
-                runButton.isEnabled = false
-            }
-            packDownloadStatus.values.any { it == AssetPackStatus.FAILED } -> {
-                downloadStatusTextView.text = "Some asset pack downloads failed ($completedPacks/$totalPacks ready)"
-                downloadProgressBar.visibility = View.GONE
-                runButton.isEnabled = false
-            }
-            else -> {
-                downloadStatusTextView.text = "Checking asset packs... ($completedPacks/$totalPacks ready)"
-                downloadProgressBar.visibility = View.VISIBLE
-                runButton.isEnabled = false
-            }
-        }
-    }
-
-    /**
-     * Runs the full prove and verify test in a background coroutine.
-     */
-    private fun runFullTest(example: Example) {
-        // Use lifecycleScope to launch a coroutine that is automatically
-        // cancelled when the Activity is destroyed.
-        lifecycleScope.launch(Dispatchers.IO + CoroutineName("IMP1 Prove+Verify")) {
-            // Show progress and disable UI on the Main thread
+    private fun runSingleProofTest(example: com.ingonyama.imp1_aar_example.data.Example) {
+        lifecycleScope.launch(Dispatchers.IO + CoroutineName(Constants.COROUTINE_NAME_SINGLE_PROOF)) {
             withContext(Dispatchers.Main) {
                 logTextView.text = ""
                 progressBar.visibility = View.VISIBLE
                 runButton.isEnabled = false
-                log("Starting test for: ${example.name}")
             }
-
-            // Check if the required asset pack is available
-            val packLocation = assetPackManager.getPackLocation(example.assetPack)
-            if (packLocation == null) {
-                log("❌ Asset pack '${example.assetPack}' not available. Please wait for download to complete.")
-                withContext(Dispatchers.Main) {
-                    progressBar.visibility = View.GONE
-                    runButton.isEnabled = false
-                }
-                return@launch
-            }
-
-            // The cache directory is a good place for temporary files.
-            val workingDir = cacheDir
-            // Clear previous output files if they exist
-            workingDir.listFiles()?.filter { it.name.endsWith(".proof") || it.name.endsWith(".public") }?.forEach { it.delete() }
-
-            // Define file paths for inputs and outputs
-            val witnessFile = File(workingDir, "witness.wtns")
-            val zkeyFile = File(workingDir, "zkey.zkey")
-            val vkFile = File(workingDir, "vk.json")
-            val proofFile = File(workingDir, "test.proof")
-            val publicFile = File(workingDir, "test.public")
-
+            
             try {
-                // Step 1: Copy asset files to the app's private storage, where they can be accessed by path.
-                log("Copying assets to device storage...")
-                copyAssetToFile(example.witnessAsset, witnessFile)
-                copyZkeyFromAssetPack(packLocation, example.zkeyAsset, zkeyFile)
-                copyAssetToFile(example.vkAsset, vkFile)
-                log("...copying complete.")
-
-                // Step 2: Run the prover
-                log("\nRunning Prover...")
-                try {
-                    val proveTime = measureTimeMillis {
-                        NativeBridge.prove(
-                            witnessPath = witnessFile.absolutePath,
-                            zkeyPath = zkeyFile.absolutePath,
-                            proofPath = proofFile.absolutePath,
-                            publicPath = publicFile.absolutePath,
-                            deviceType = DeviceType.Cpu
-                        )
-                    }
-                    log("✅ Prove SUCCESSFUL")
-                    log("   Time taken: $proveTime ms")
-                } catch (e: ProverException) {
-                    log("❌ Prove FAILED")
-                    log("   Error: ${e.message}")
-                    // If prove fails, we can't continue to verify.
-                    return@launch
-                } finally {
-                    // Update UI on the Main thread after this block is done
+                val packLocation = assetPackManager.getPackLocation(example.assetPack)
+                if (packLocation == null) {
                     withContext(Dispatchers.Main) {
+                        logTextView.append(getString(R.string.error_asset_pack_not_available, example.assetPack) + "\n")
                         progressBar.visibility = View.GONE
                         runButton.isEnabled = true
                     }
+                    return@launch
                 }
-
-                // Step 3: Run the verifier
-                log("\nRunning Verifier...")
-                val verifyTime = measureTimeMillis {
-                    val result = NativeBridge.verify(
-                        proofPath = proofFile.absolutePath,
-                        publicPath = publicFile.absolutePath,
-                        vkPath = vkFile.absolutePath
-                    )
-
-                    if(result == VerifierResult.VerifierSuccess) {
-                        log("✅ Verify SUCCESSFUL")
-                    } else {
-                        log("❌ Verify FAILED")
-                    }
-                }
-                log("   Time taken: $verifyTime ms")
-
-            } catch (e: IOException) {
-                log("\n❌ CRITICAL ERROR: Could not copy asset files.")
-                log("   Make sure the filenames in the `examples` list are correct.")
-                log("   Error: ${e.message}")
-            } finally {
-                // Final UI update, re-enabling the button and hiding the progress bar.
+                
+                val result = proofTestRunner.runSingleProofTest(example, packLocation)
+                
                 withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    runButton.isEnabled = true
+                }
+                
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    logTextView.append(getString(R.string.error_prefix) + e.message + "\n")
                     progressBar.visibility = View.GONE
                     runButton.isEnabled = true
                 }
@@ -337,43 +228,46 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Copies a zkey file from the asset pack to internal storage.
+     * Runs parallel proof tests.
      */
-    @Throws(IOException::class)
-    private fun copyZkeyFromAssetPack(packLocation: AssetPackLocation, zkeyAssetName: String, destinationFile: File) {
-        val zkeyFile = File(packLocation.assetsPath(), zkeyAssetName)
-        if (!zkeyFile.exists()) {
-            throw IOException("ZKey file not found in asset pack: $zkeyAssetName")
-        }
-        
-        FileInputStream(zkeyFile).use { inputStream ->
-            FileOutputStream(destinationFile).use { outputStream ->
-                inputStream.copyTo(outputStream)
+    private fun runParallelProofTest(example: com.ingonyama.imp1_aar_example.data.Example) {
+        lifecycleScope.launch(Dispatchers.IO + CoroutineName(Constants.COROUTINE_NAME_PARALLEL_PROOF)) {
+            withContext(Dispatchers.Main) {
+                logTextView.text = ""
+                progressBar.visibility = View.VISIBLE
+                runButton.isEnabled = false
+            }
+            
+            try {
+                val packLocation = assetPackManager.getPackLocation(example.assetPack)
+                if (packLocation == null) {
+                    withContext(Dispatchers.Main) {
+                        logTextView.append(getString(R.string.error_asset_pack_not_available, example.assetPack) + "\n")
+                        progressBar.visibility = View.GONE
+                        runButton.isEnabled = true
+                    }
+                    return@launch
+                }
+                
+                val numParallelProofs = parallelProofManager.getNumParallelProofs()
+                val result = proofTestRunner.runParallelProofTest(example, packLocation, numParallelProofs)
+                
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    runButton.isEnabled = true
+                }
+                
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    logTextView.append(getString(R.string.error_prefix) + e.message + "\n")
+                    progressBar.visibility = View.GONE
+                    runButton.isEnabled = true
+                }
             }
         }
     }
 
-    /**
-     * Copies a file from the app's assets folder to internal storage.
-     * @param assetName The name of the file in the assets folder.
-     * @param destinationFile The destination file.
-     * @throws IOException if the file cannot be read or written.
-     */
-    @Throws(IOException::class)
-    private fun copyAssetToFile(assetName: String, destinationFile: File) {
-        assets.open(assetName).use { inputStream ->
-            FileOutputStream(destinationFile).use { outputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-    }
 
-    /**
-     * Helper function to append messages to the on-screen log from any thread.
-     */
-    private suspend fun log(message: String) {
-        withContext(Dispatchers.Main) {
-            logTextView.append("$message\n")
-        }
-    }
+    
+
 }

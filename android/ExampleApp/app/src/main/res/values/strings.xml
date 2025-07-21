@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">IMP1_AAR_Example</string>
+    
+    <!-- UI Button Text -->
+    <string name="button_text_single_proof">Run Single Proof</string>
+    <string name="button_text_parallel_proofs">Run Parallel Proofs</string>
+    
+    <!-- Error Messages -->
+    <string name="error_asset_pack_not_available">❌ Asset pack \'%1$s\' not available. Please wait for download to complete.</string>
+    <string name="error_prefix">❌ Error: </string>
+    
+    <!-- Status Emojis -->
+    <string name="success_emoji">✅</string>
+    <string name="failure_emoji">❌</string>
+    <string name="unknown_emoji">❓</string>
 </resources>

@@ -4,27 +4,11 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 
-enum class DeviceType(val value: Int) {
-    Cpu(1),
-}
-
-enum class ProverResult(val value: Int) {
-    ProverSuccess(0),
-    ProverFailure(1);
-
-    companion object {
-        fun fromInt(value: Int) = entries.first { it.value == value }
-    }
-}
-
-enum class VerifierResult(val value: Int) {
-    VerifierSuccess(0),
-    VerifierFailure(1);
-
-    companion object {
-        fun fromInt(value: Int) = entries.first { it.value == value }
-    }
-}
+// Use unified enum system
+typealias DeviceType = Enums.DeviceType
+typealias ProverResult = Enums.ProverResult
+typealias VerifierResult = Enums.VerifierResult
+typealias ProofResult = Enums.ProofResult
 
 class ProverException(message: String) : Exception(message)
 
@@ -58,7 +42,7 @@ object NativeBridge {
             proveNative(witnessPath, zkeyPath, proofPath, publicPath, errorBuffer, deviceType.value)
         )
 
-        if (result == ProverResult.ProverFailure) {
+        if (result == ProverResult.FAILURE) {
             val errorBytes = ByteArray(errorBuffer.position())
             errorBuffer.rewind()
             errorBuffer.get(errorBytes)
@@ -85,6 +69,64 @@ object NativeBridge {
         )
     }
 
+    /**
+     * Generates multiple proofs in parallel.
+     *
+     * @param witnessPaths Array of paths to witness files.
+     * @param zkeyPath Path to the zkey file (shared for all proofs).
+     * @param proofPaths Array of paths where output proofs will be saved.
+     * @param publicPaths Array of paths where output public signals will be saved.
+     * @param deviceType The type of device to use for proving.
+     * @param maxBatchSize Maximum batch size for processing (0 for default).
+     * @return Array of ProofResult indicating success/failure for each proof.
+     * @throws ProverException if the Rust parallel_prove function returns a failure.
+     */
+    fun parallelProve(
+        witnessPaths: Array<String>,
+        zkeyPath: String,
+        proofPaths: Array<String>,
+        publicPaths: Array<String>,
+        deviceType: DeviceType,
+        maxBatchSize: Long = 0
+    ): Array<ProofResult> {
+        require(witnessPaths.size == proofPaths.size && proofPaths.size == publicPaths.size) {
+            "All path arrays must have the same size"
+        }
+        
+        val errorMsgMaxSize = 256
+        val errorBuffer = ByteBuffer.allocateDirect(errorMsgMaxSize).order(ByteOrder.nativeOrder())
+        
+        val resultsPtr = parallelProveNative(
+            witnessPaths,
+            zkeyPath,
+            proofPaths,
+            publicPaths,
+            errorBuffer,
+            deviceType.value,
+            maxBatchSize
+        )
+        
+        if (resultsPtr == 0L) {
+            // Error occurred
+            val errorBytes = ByteArray(errorBuffer.position())
+            errorBuffer.rewind()
+            errorBuffer.get(errorBytes)
+            val errorMessage = String(errorBytes, StandardCharsets.UTF_8).trim()
+            throw ProverException(errorMessage)
+        }
+        
+        // Convert results pointer to array
+        val results = Array(witnessPaths.size) { index ->
+            val resultValue = getProverResultValue(resultsPtr, index)
+            ProofResult.fromInt(resultValue)
+        }
+        
+        // Free the native memory
+        freeParallelResultsNative(resultsPtr, witnessPaths.size)
+        
+        return results
+    }
+
     // Private external functions that link to the JNI bridge
     private external fun proveNative(
         witnessPath: String,
@@ -100,4 +142,18 @@ object NativeBridge {
         publicPath: String,
         vkPath: String
     ): Int
+
+    private external fun parallelProveNative(
+        witnessPaths: Array<String>,
+        zkeyPath: String,
+        proofPaths: Array<String>,
+        publicPaths: Array<String>,
+        errorMsgBuffer: ByteBuffer,
+        deviceType: Int,
+        maxBatchSize: Long
+    ): Long
+
+    private external fun getProverResultValue(resultsPtr: Long, index: Int): Int
+
+    private external fun freeParallelResultsNative(resultsPtr: Long, count: Int)
 }

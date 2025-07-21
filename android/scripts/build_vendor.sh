@@ -132,7 +132,7 @@ build_for_target() {
     if [ "$DEBUG" = true ]; then
         CARGO_PROFILE_RELEASE_DEBUG=true cargo build --target "$target_triple" --features android --release --verbose
     else
-        cargo build --target "$target_triple" --features android --release --verbose
+        cargo build --target "$target_triple" --release --verbose
     fi 
     cd "$SCRIPT_DIR"
 
