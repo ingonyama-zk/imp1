@@ -71,30 +71,6 @@ object Constants {
     /** Pattern for parallel public files */
     const val PARALLEL_PUBLIC_PATTERN = "public_%d.public"
     
-    // ============================================================================
-    // UI STRINGS
-    // ============================================================================
-    
-    /** Button text for single proof mode */
-    const val BUTTON_TEXT_SINGLE_PROOF = "Run Single Proof"
-    
-    /** Button text for parallel proof mode */
-    const val BUTTON_TEXT_PARALLEL_PROOFS = "Run Parallel Proofs"
-    
-    /** Error message for asset pack not available */
-    const val ERROR_ASSET_PACK_NOT_AVAILABLE = "❌ Asset pack '%s' not available. Please wait for download to complete."
-    
-    /** Generic error message prefix */
-    const val ERROR_PREFIX = "❌ Error: "
-    
-    /** Success emoji for proof generation */
-    const val SUCCESS_EMOJI = "✅"
-    
-    /** Failure emoji for proof generation */
-    const val FAILURE_EMOJI = "❌"
-    
-    /** Unknown result emoji */
-    const val UNKNOWN_EMOJI = "❓"
     
     // ============================================================================
     // LOG MESSAGES

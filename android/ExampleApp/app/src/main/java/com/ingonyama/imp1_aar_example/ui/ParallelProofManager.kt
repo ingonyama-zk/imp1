@@ -23,18 +23,14 @@ class ParallelProofManager(
     ) {
         minusButton.setOnClickListener {
             if (numParallelProofs > Constants.MIN_PARALLEL_PROOFS) {
-                numParallelProofs--
-                parallelCountTextView.text = numParallelProofs.toString()
-                updateButtonStates()
+                setNumParallelProofs(numParallelProofs - 1)
                 onCountChanged(numParallelProofs)
             }
         }
         
         plusButton.setOnClickListener {
             if (numParallelProofs < Constants.MAX_PARALLEL_PROOFS) {
-                numParallelProofs++
-                parallelCountTextView.text = numParallelProofs.toString()
-                updateButtonStates()
+                setNumParallelProofs(numParallelProofs + 1)
                 onCountChanged(numParallelProofs)
             }
         }

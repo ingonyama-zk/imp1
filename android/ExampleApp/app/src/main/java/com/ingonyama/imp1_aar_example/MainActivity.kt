@@ -181,10 +181,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateUIForMode() {
         if (isParallelMode) {
             parallelConfigLayout.visibility = View.VISIBLE
-            runButton.text = Constants.BUTTON_TEXT_PARALLEL_PROOFS
+            runButton.text = getString(R.string.button_text_parallel_proofs)
         } else {
             parallelConfigLayout.visibility = View.GONE
-            runButton.text = Constants.BUTTON_TEXT_SINGLE_PROOF
+            runButton.text = getString(R.string.button_text_single_proof)
         }
     }
 
@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
                 val packLocation = assetPackManager.getPackLocation(example.assetPack)
                 if (packLocation == null) {
                     withContext(Dispatchers.Main) {
-                        logTextView.append(Constants.ERROR_ASSET_PACK_NOT_AVAILABLE.format(example.assetPack) + "\n")
+                        logTextView.append(getString(R.string.error_asset_pack_not_available, example.assetPack) + "\n")
                         progressBar.visibility = View.GONE
                         runButton.isEnabled = true
                     }
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    logTextView.append(Constants.ERROR_PREFIX + e.message + "\n")
+                    logTextView.append(getString(R.string.error_prefix) + e.message + "\n")
                     progressBar.visibility = View.GONE
                     runButton.isEnabled = true
                 }
@@ -242,7 +242,7 @@ class MainActivity : AppCompatActivity() {
                 val packLocation = assetPackManager.getPackLocation(example.assetPack)
                 if (packLocation == null) {
                     withContext(Dispatchers.Main) {
-                        logTextView.append(Constants.ERROR_ASSET_PACK_NOT_AVAILABLE.format(example.assetPack) + "\n")
+                        logTextView.append(getString(R.string.error_asset_pack_not_available, example.assetPack) + "\n")
                         progressBar.visibility = View.GONE
                         runButton.isEnabled = true
                     }
@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
                 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    logTextView.append(Constants.ERROR_PREFIX + e.message + "\n")
+                    logTextView.append(getString(R.string.error_prefix) + e.message + "\n")
                     progressBar.visibility = View.GONE
                     runButton.isEnabled = true
                 }

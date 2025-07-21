@@ -58,26 +58,22 @@ class AssetPackManager(private val context: Context) {
                 packDownloadStatus[packName] = state.status()
                 updatePackProgress(state)
                 
+                // Always send the current state
+                trySend(createAssetPackState())
+                
                 when (state.status()) {
                     AssetPackStatus.COMPLETED -> {
-                        packDownloadProgress[packName] = 100
-                        trySend(createAssetPackState())
-                        
                         // Check if all packs are completed
                         if (packDownloadStatus.values.all { it == AssetPackStatus.COMPLETED }) {
-                            assetPackManager.unregisterListener(listener)
+                            close()
                         }
                     }
-                    AssetPackStatus.FAILED -> {
-                        trySend(createAssetPackState())
-                        assetPackManager.unregisterListener(listener)
-                    }
+                    AssetPackStatus.FAILED,
                     AssetPackStatus.CANCELED -> {
-                        trySend(createAssetPackState())
-                        assetPackManager.unregisterListener(listener)
+                        close()
                     }
                     else -> {
-                        trySend(createAssetPackState())
+                        // Continue listening for updates
                     }
                 }
             }
@@ -105,13 +101,7 @@ class AssetPackManager(private val context: Context) {
      * Downloads the specified asset packs.
      */
     private fun downloadAssetPacks(packNames: List<String>) {
-        val request = assetPackManager.fetch(packNames)
-        
-        request.addOnSuccessListener {
-            // Download started successfully
-        }.addOnFailureListener { exception ->
-            // Handle download failure
-        }
+        assetPackManager.fetch(packNames)
     }
     
     /**

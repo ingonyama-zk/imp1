@@ -5,7 +5,7 @@ This directory contains the Android implementation of IMP1, a mobile-first zero-
 ## Overview
 
 IMP1 for Android provides:
-- **Native Kotlin library** with JNI bridge to Rust
+- **Kotlin library** with ICICLE inside
 - **Groth16 protocol** implementation for zero-knowledge proofs
 - **Parallel proof generation** for batch processing
 - **Optimized for arm64-v8a** architecture
@@ -16,7 +16,7 @@ IMP1 for Android provides:
 Before building the library, ensure you have:
 - **Android Studio** (latest version recommended)
 - **Android SDK** with API level 24+
-- **Java 21+** (required for Android Gradle plugin compatibility)
+- **Java 21** (required for Android Gradle plugin compatibility)
 - **Rust** toolchain installed (`rustup`)
 - **Android NDK** (r27c or later)
 - **Git** with access to the IMP1 repository
@@ -223,7 +223,7 @@ The `ExampleApp/` directory contains a complete implementation showing:
 - **Android**: arm64-v8a only
 - **Minimum SDK**: API level 24 (Android 7.0)
 - **Target SDK**: API level 36 (Android 14)
-- **Java**: 21+ (automatically detected and configured)
+- **Java**: 21 (automatically detected and configured)
 
 ## Performance
 
@@ -231,8 +231,6 @@ The library is optimized for mobile devices and includes:
 - **Native Rust implementation** for maximum performance
 - **Parallel proof generation** for batch processing
 - **JNI bridge** for seamless Kotlin integration
-- **Memory-efficient** implementations
-- **Up to 3x faster** than RapidSnark on mobile devices
 
 ## Build Configuration
 
@@ -242,7 +240,7 @@ The library is optimized for mobile devices and includes:
 - **Rust Targets**: aarch64-linux-android
 - **C++ Standard**: C++17
 - **STL**: c++_shared
-- **Java**: 21+ (auto-detected)
+- **Java**: 21 (auto-detected)
 
 ### Build Scripts
 
@@ -254,7 +252,7 @@ The library is optimized for mobile devices and includes:
 
 ### Common Issues
 
-1. **Java version issues**: The build scripts automatically detect and configure Java 21+
+1. **Java version issues**: The build scripts automatically detect and configure Java 21
 2. **NDK not found**: The build script will automatically download NDK r27c
 3. **Rust targets missing**: Run `rustup target add aarch64-linux-android`
 4. **Build fails**: Ensure all submodules are initialized
