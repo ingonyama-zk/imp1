@@ -66,13 +66,15 @@ Generate multiple proofs simultaneously with configurable batch sizes for optima
 
 1. [Download the xcframework](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1.xcframework.zip)
 2. Unzip & Drag **imp1.xcframework** into your iOS app.
-3. Use the `prove()` and `verify()` functions from the framework’s public interface. See [`PublicApi.h`](./ios/imp1/imp1/PublicApi.h) for function definitions, usage comments, and required types.
+3. Use the `prove()`, `parallel_prove()`, and `verify()` functions from the framework’s public interface. See [`PublicApi.h`](./ios/imp1/imp1/PublicApi.h) for function definitions, usage comments, and required types.
+4. More details in the platform-specific [README](./ios/README.md)
 
 ### Android
 
 1. [Download the aar](https://github.com/ingonyama-zk/imp1/releases/download/v0.2.0/imp1-0.2.0.aar)
 2. Drag **imp1-0.2.0.aar** into your Android app.
-3. Use the `prove()` and `verify()` functions from the library’s native bridge. See [`NativeBridge.kt`](./android/imp1/app/src/main/java/com/ingonyama/imp1/NativeBridge.kt) for function definitions, usage comments, and required types.
+3. Use the `prove()`, `parallel_prove()`, and `verify()` functions from the library’s native bridge. See [`NativeBridge.kt`](./android/imp1/app/src/main/java/com/ingonyama/imp1/NativeBridge.kt) for function definitions, usage comments, and required types.
+4. More details in the platform-specific [README](./android/README.md)
 
 ---
 
