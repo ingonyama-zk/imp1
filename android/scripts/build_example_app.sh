@@ -84,7 +84,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "SCRIPT_DIR: $SCRIPT_DIR"
 
 # --- Argument Parsing ---
-ARR_VERSION="0.2.1"
+ARR_VERSION="0.2.2"
 DEBUG=false
 for arg in "$@"; do
   case $arg in
