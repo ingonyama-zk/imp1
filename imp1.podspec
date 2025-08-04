@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'IMP1'
-  s.version          = '0.2.0'
+  s.version          = '0.2.2'
   s.summary          = 'Mobile-first ZK proving framework powered by ICICLE'
   s.description      = <<-DESC
 IMP1 is a lightweight, privacy-preserving zero-knowledge proving framework for iOS. Built on ICICLE-SNARK, optimized for mobile, and up to 3× faster than RapidSnark.

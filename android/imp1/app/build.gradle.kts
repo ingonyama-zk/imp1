@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-version = "0.2.1"
+version = "0.2.2"
 
 android {
     namespace = "com.ingonyama.imp1"

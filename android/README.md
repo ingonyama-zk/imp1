@@ -71,8 +71,8 @@ This script will:
 ```
 
 This creates:
-- `imp1/app/build/outputs/aar/imp1-0.2.1-release.aar` - Release version
-- `imp1/app/build/outputs/aar/imp1-0.2.1-debug.aar` - Debug version
+- `imp1/app/build/outputs/aar/imp1-0.2.2-release.aar` - Release version
+- `imp1/app/build/outputs/aar/imp1-0.2.2-debug.aar` - Debug version
 
 #### Step 3: Build and Test the Example App
 ```bash
@@ -130,7 +130,7 @@ android/
 1. **Copy the AAR** to your Android project's `libs/` directory
 2. **Add dependency** in your `build.gradle.kts`:
    ```kotlin
-   implementation(files("libs/imp1-0.2.1.aar"))
+   implementation(files("libs/imp1-0.2.2.aar"))
    ```
 3. **Import** the library in your Kotlin code:
    ```kotlin
@@ -260,7 +260,7 @@ The library is optimized for mobile devices and includes:
 
 ## Recent Updates
 
-### Version 0.2.1
+### Version 0.2.2
 - **Parallel proof generation** support
 - **Automated build scripts** for easier development
 
